@@ -1,11 +1,4 @@
-{
-  "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "binharry-website",
-  "compatibility_date": "2025-02-01",
-  "compatibility_flags": ["nodejs_compat"],
-  "main": ".open-next/worker.js",
-  "assets": {
-    "directory": ".open-next/assets",
-    "binding": "ASSETS"
-  }
-}
+// ⚠️ Ce fichier n'est pas utilisé
+// Le site est déployé sur Cloudflare Pages, pas Cloudflare Workers
+// Voir README.md pour les instructions de déploiement
+
