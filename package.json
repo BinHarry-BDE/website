@@ -4,11 +4,12 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build && rimraf '.next/cache'",
+    "build": "next build",
+    "build:worker": "opennextjs-cloudflare build",
     "start": "next start",
     "lint": "next lint",
-    "deploy": "npm run build && wrangler deploy",
-    "preview": "wrangler dev"
+    "deploy": "npm run build:worker && wrangler deploy",
+    "preview": "opennextjs-cloudflare preview"
   },
   "dependencies": {
     "next": "^15.1.12",
@@ -16,15 +17,11 @@
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
+    "@opennextjs/cloudflare": "^1.16.5",
     "@types/node": "^22",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "typescript": "^5",
-<<<<<<< HEAD
-    "open-next": "^3.0.0",
-    "wrangler": "^3.0.0"
-=======
-    "rimraf": "^5.0.0"
->>>>>>> 5b6d924154e88b7465ee6e505adb27c24c5ff375
+    "wrangler": "^4.65.0"
   }
 }

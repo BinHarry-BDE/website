@@ -6,8 +6,9 @@ export const metadata: Metadata = {
   description: 'Mentions légales du site BinHarry, BDE du BUT Informatique de Reims.',
 };
 
-// Page dynamique (rendu côté serveur pour OpenNext)
-export const dynamic = 'force-dynamic';
+// Page statique pour le SEO
+export const dynamic = 'force-static';
+export const revalidate = false;
 
 export default function MentionsLegales() {
   return (

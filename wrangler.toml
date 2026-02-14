@@ -1,14 +1,11 @@
 name = "website"
-main = "./.open-next/worker.js"
-compatibility_date = "2024-09-23"
+main = ".open-next/worker.js"
+compatibility_date = "2024-12-01"
 compatibility_flags = ["nodejs_compat"]
 
-[env.production]
-route = "binharry.fr/*"
-zone_id = "YOUR_ZONE_ID"
-
-[[env.production.routes]]
-pattern = "binharry.fr/*"
-zone_id = "YOUR_ZONE_ID"
+# Assets statiques
+[assets]
+directory = ".open-next/assets"
+binding = "ASSETS"
 
 

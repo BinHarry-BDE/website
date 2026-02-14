@@ -57,3 +57,13 @@ export interface Abonnement {
   statut: 'actif' | 'expire' | 'annule';
   created_at: string;
 }
+
+// Type pour la mise à jour d'un utilisateur (admin)
+export interface UpdateUserData {
+  nom?: string;
+  prenom?: string;
+  email?: string;
+  avatar_url?: string | null;
+  is_active?: boolean;
+  role?: 'user' | 'admin';
+}

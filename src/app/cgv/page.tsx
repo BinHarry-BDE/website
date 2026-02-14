@@ -6,8 +6,9 @@ export const metadata: Metadata = {
   description: 'Conditions Générales de Vente (CGV) du BDE BinHarry - Adhésion et services.',
 };
 
-// Page dynamique (rendu côté serveur pour OpenNext)
-export const dynamic = 'force-dynamic';
+// Page statique pour le SEO
+export const dynamic = 'force-static';
+export const revalidate = false;
 
 export default function CGV() {
   return (

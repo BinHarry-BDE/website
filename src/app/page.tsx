@@ -5,7 +5,10 @@ export const metadata: Metadata = {
   description: 'BinHarry, le BDE du BUT Informatique de Reims. Découvrez nos événements, soirées et activités étudiantes.',
 };
 
-// Page statique (rendu au build time pour OpenNext)
+// Page statique pour le SEO (pré-rendu au build time)
+export const dynamic = 'force-static';
+export const revalidate = false;
+
 export default function Home() {
   return (
     <div className="dev-page">

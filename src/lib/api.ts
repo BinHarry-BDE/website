@@ -1,4 +1,4 @@
-import type { ApiResponse, AuthResponse, User, PaginatedResponse, Message, Abonnement } from '@/types';
+import type { ApiResponse, AuthResponse, User, PaginatedResponse, Message, Abonnement, UpdateUserData } from '@/types';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8787';
 
@@ -116,7 +116,7 @@ class ApiClient {
     return this.request<User>(`/api/users/${id}`);
   }
 
-  async updateUser(id: number, data: Partial<Omit<User, 'is_active'>> & { is_active?: boolean; role?: 'user' | 'admin' }): Promise<ApiResponse<User>> {
+  async updateUser(id: number, data: UpdateUserData): Promise<ApiResponse<User>> {
     return this.request<User>(`/api/users/${id}`, {
       method: 'PATCH',
       body: JSON.stringify(data),
