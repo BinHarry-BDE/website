@@ -1,13 +1,5 @@
 {
-  "name": "binharry-website",
-  "type": "javascript",
-  "main": "dist/index.js",
-  "env": {
-    "production": {
-      "route": "binharry.fr/*",
-      "zone_id": "YOUR_ZONE_ID"
-    }
-  }
+  "name": "binharry-website"
 }
 
 
