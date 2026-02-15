@@ -45,7 +45,11 @@ export default function Navbar() {
                   aria-expanded={dropdownOpen}
                 >
                   <span className="navbar-avatar">
-                    {user.prenom[0]}{user.nom[0]}
+                    {user.avatar_url ? (
+                      <img src={user.avatar_url} alt={`${user.prenom} ${user.nom}`} />
+                    ) : (
+                      <>{user.prenom[0]}{user.nom[0]}</>
+                    )}
                   </span>
                   <span className="navbar-username">{user.prenom}</span>
                   <svg className="navbar-chevron" width="12" height="12" viewBox="0 0 12 12" fill="currentColor">

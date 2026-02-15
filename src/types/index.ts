@@ -59,6 +59,25 @@ export interface Abonnement {
   created_at: string;
 }
 
+export interface PublicMember {
+  id: number;
+  prenom: string;
+  nom: string;
+  avatar_url: string | null;
+  created_at: string;
+}
+
+export interface Annonce {
+  id: number;
+  titre: string;
+  contenu: string;
+  image_url: string | null;
+  date_evenement: string | null;
+  created_at: string;
+  auteur_prenom: string | null;
+  auteur_nom: string | null;
+}
+
 // Type pour la mise à jour d'un utilisateur (admin)
 export interface UpdateUserData {
   nom?: string;

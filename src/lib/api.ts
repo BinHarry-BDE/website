@@ -1,4 +1,4 @@
-import type { ApiResponse, AuthResponse, User, PaginatedResponse, Message, Abonnement, UpdateUserData } from '@/types';
+import type { ApiResponse, AuthResponse, User, PaginatedResponse, Message, Abonnement, UpdateUserData, PublicMember, Annonce } from '@/types';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8787';
 
@@ -253,6 +253,15 @@ class ApiClient {
     par_type: Array<{ type: string; count: number; total_prix: number }>;
   }>> {
     return this.request('/api/subscriptions/stats');
+  }
+
+  // Public
+  async getMembers(): Promise<ApiResponse<PublicMember[]>> {
+    return this.request<PublicMember[]>('/api/public/members');
+  }
+
+  async getAnnonces(): Promise<ApiResponse<Annonce[]>> {
+    return this.request<Annonce[]>('/api/public/annonces');
   }
 }
 
