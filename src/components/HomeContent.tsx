@@ -154,7 +154,7 @@ export default function HomeContent() {
       <section className="home-section">
         <h2 className="section-title">Nos membres</h2>
         <p className="section-desc">
-          Merci à tous ceux qui ont rejoint BinHarry !
+          Merci à nos adhérents et contributeurs qui soutiennent BinHarry !
         </p>
         {members.length > 0 ? (
           <div className="members-wall">
@@ -173,7 +173,7 @@ export default function HomeContent() {
           </div>
         ) : (
           <div className="annonce-empty">
-            <p className="annonce-empty-desc">Sois le premier à rejoindre BinHarry !</p>
+            <p className="annonce-empty-desc">Sois le premier à soutenir BinHarry !</p>
           </div>
         )}
       </section>
