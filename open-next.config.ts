@@ -1,3 +1,7 @@
-// Ce fichier n'est pas utilisé - le site est déployé sur Cloudflare Pages
-// Pas besoin de configuration OpenNext
-export {};
+import type { OpenNextConfig } from "@opennextjs/cloudflare";
+
+const config: OpenNextConfig = {
+  default: {},
+};
+
+export default config;
