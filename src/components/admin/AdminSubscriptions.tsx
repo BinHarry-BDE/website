@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { api } from '@/lib/api';
 import type { Abonnement, User } from '@/types';
+import { IconTrash } from '@/components/Icons';
 
 export default function AdminSubscriptions() {
   const [subscriptions, setSubscriptions] = useState<(Abonnement & { utilisateur_nom?: string; utilisateur_prenom?: string; utilisateur_email?: string })[]>([]);
@@ -194,7 +195,7 @@ export default function AdminSubscriptions() {
                           onClick={() => handleDelete(sub.id)}
                           title="Supprimer"
                         >
-                          🗑️
+                          <IconTrash size={14} />
                         </button>
                       </td>
                     </tr>
