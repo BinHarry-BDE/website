@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { api } from '@/lib/api';
 import type { Abonnement, User } from '@/types';
 import { IconTrash } from '@/components/Icons';
@@ -17,6 +17,8 @@ export default function AdminSubscriptions() {
   // Create form state
   const [users, setUsers] = useState<User[]>([]);
   const [userSearch, setUserSearch] = useState('');
+  const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
+  const userDropdownRef = useRef<HTMLDivElement>(null);
   const [newSub, setNewSub] = useState({
     utilisateur_id: 0,
     type: 'mensuel' as 'mensuel' | 'annuel' | 'evenement',
@@ -56,6 +58,16 @@ export default function AdminSubscriptions() {
   }, [showCreate, loadUsers]);
 
   useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (userDropdownRef.current && !userDropdownRef.current.contains(event.target as Node)) {
+        setIsUserDropdownOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  useEffect(() => {
     setPage(1);
   }, [statusFilter, typeFilter]);
 
@@ -85,6 +97,7 @@ export default function AdminSubscriptions() {
         prix: '',
       });
       setUserSearch('');
+      setIsUserDropdownOpen(false);
       loadSubscriptions();
     } else {
       alert(response.error || 'Erreur lors de la création');
@@ -128,6 +141,35 @@ export default function AdminSubscriptions() {
       user.email.toLowerCase().includes(search)
     );
   });
+
+  const handleSelectUser = (user: User) => {
+    setNewSub({ ...newSub, utilisateur_id: user.id });
+    setUserSearch(`${user.prenom} ${user.nom}`);
+    setIsUserDropdownOpen(false);
+  };
+
+  const handleCloseModal = () => {
+    setShowCreate(false);
+    setUserSearch('');
+    setIsUserDropdownOpen(false);
+    setNewSub({
+      utilisateur_id: 0,
+      type: 'mensuel',
+      nom: '',
+      description: '',
+      date_debut: new Date().toISOString().split('T')[0],
+      date_fin: '',
+      prix: '',
+    });
+  };
+
+  const getSelectedUserDisplay = () => {
+    const selectedUser = users.find((u) => u.id === newSub.utilisateur_id);
+    if (selectedUser) {
+      return `${selectedUser.prenom.toUpperCase()} ${selectedUser.nom.toUpperCase()} (${selectedUser.email})`;
+    }
+    return userSearch;
+  };
 
   const totalPages = Math.ceil(total / 20);
 
@@ -244,41 +286,76 @@ export default function AdminSubscriptions() {
 
       {/* Create Modal */}
       {showCreate && (
-        <div className="modal-overlay" onClick={() => setShowCreate(false)}>
+        <div className="modal-overlay" onClick={() => handleCloseModal()}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
               <h2>Créer un abonnement</h2>
-              <button className="modal-close" onClick={() => setShowCreate(false)}>×</button>
+              <button className="modal-close" onClick={() => handleCloseModal()}>×</button>
             </div>
 
             <form onSubmit={handleCreate} className="dashboard-form">
-              <div className="dashboard-form-group">
+              <div className="dashboard-form-group" ref={userDropdownRef} style={{ position: 'relative' }}>
                 <label>Utilisateur *</label>
                 <input
                   type="text"
-                  placeholder="Rechercher un utilisateur..."
-                  value={userSearch}
-                  onChange={(e) => setUserSearch(e.target.value)}
-                  style={{ marginBottom: '0.5rem' }}
+                  placeholder="Rechercher et sélectionner un utilisateur..."
+                  value={newSub.utilisateur_id ? getSelectedUserDisplay() : userSearch}
+                  onChange={(e) => {
+                    setUserSearch(e.target.value);
+                    setNewSub({ ...newSub, utilisateur_id: 0 });
+                    setIsUserDropdownOpen(true);
+                  }}
+                  onFocus={() => setIsUserDropdownOpen(true)}
+                  required={!newSub.utilisateur_id}
+                  style={{ width: '100%' }}
                 />
-                <select
-                  value={newSub.utilisateur_id}
-                  onChange={(e) => setNewSub({ ...newSub, utilisateur_id: parseInt(e.target.value) })}
-                  required
-                  size={5}
-                  style={{ height: 'auto' }}
-                >
-                  <option value={0} disabled>Sélectionner un utilisateur</option>
-                  {filteredUsers.map((user) => (
-                    <option key={user.id} value={user.id}>
-                      {user.prenom.toUpperCase()} {user.nom.toUpperCase()} ({user.email})
-                    </option>
-                  ))}
-                </select>
-                {filteredUsers.length === 0 && userSearch && (
-                  <small style={{ color: '#666', marginTop: '0.25rem', display: 'block' }}>
-                    Aucun utilisateur trouvé pour &quot;{userSearch}&quot;
-                  </small>
+                
+                {isUserDropdownOpen && (
+                  <div
+                    style={{
+                      position: 'absolute',
+                      top: '100%',
+                      left: 0,
+                      right: 0,
+                      background: 'white',
+                      border: '1px solid #ccc',
+                      borderTop: 'none',
+                      borderRadius: '0 0 4px 4px',
+                      maxHeight: '200px',
+                      overflowY: 'auto',
+                      zIndex: 1000,
+                      boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+                    }}
+                  >
+                    {filteredUsers.length > 0 ? (
+                      filteredUsers.map((user) => (
+                        <div
+                          key={user.id}
+                          onClick={() => handleSelectUser(user)}
+                          style={{
+                            padding: '0.75rem 1rem',
+                            cursor: 'pointer',
+                            borderBottom: '1px solid #f0f0f0',
+                            transition: 'background-color 0.2s',
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.backgroundColor = '#f5f5f5';
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.backgroundColor = 'white';
+                          }}
+                        >
+                          <strong>{user.prenom.toUpperCase()} {user.nom.toUpperCase()}</strong>
+                          <br />
+                          <small style={{ color: '#666' }}>{user.email}</small>
+                        </div>
+                      ))
+                    ) : (
+                      <div style={{ padding: '0.75rem 1rem', color: '#999', textAlign: 'center' }}>
+                        Aucun utilisateur trouvé
+                      </div>
+                    )}
+                  </div>
                 )}
               </div>
 
