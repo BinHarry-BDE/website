@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { api } from '@/lib/api';
 import type { Abonnement } from '@/types';
+import { IconCreditCard } from '@/components/Icons';
 
 export default function DashboardSubscriptions() {
   const [subscriptions, setSubscriptions] = useState<Abonnement[]>([]);
@@ -77,7 +78,7 @@ export default function DashboardSubscriptions() {
 
         {subscriptions.length === 0 ? (
           <div className="empty-state">
-            <div className="empty-state-icon">💳</div>
+            <div className="empty-state-icon"><IconCreditCard size={48} /></div>
             <h3>Aucun abonnement</h3>
             <p>Vous n&apos;avez pas encore d&apos;abonnement actif.</p>
           </div>

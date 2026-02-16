@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { api } from '@/lib/api';
 import type { Message } from '@/types';
+import { IconStar, IconTrash, IconMailbox } from '@/components/Icons';
 
 type TabType = 'inbox' | 'sent';
 
@@ -124,10 +125,10 @@ export default function DashboardMailbox() {
                 onClick={handleMarkImportant}
                 title={selectedMessage.important ? 'Retirer des importants' : 'Marquer comme important'}
               >
-                ⭐
+                <IconStar size={14} />
               </button>
               <button className="btn btn-danger btn-sm" onClick={handleDelete}>
-                🗑️
+                <IconTrash size={14} />
               </button>
               <button className="btn btn-secondary btn-sm" onClick={() => setSelectedMessage(null)}>
                 Retour
@@ -165,7 +166,7 @@ export default function DashboardMailbox() {
         <div className="alert alert-error">{error}</div>
       ) : messages.length === 0 ? (
         <div className="empty-state">
-          <div className="empty-state-icon">📭</div>
+          <div className="empty-state-icon"><IconMailbox size={48} /></div>
           <h3>Aucun message</h3>
           <p>{activeTab === 'inbox' ? 'Votre boîte de réception est vide.' : 'Vous n\'avez envoyé aucun message.'}</p>
         </div>
