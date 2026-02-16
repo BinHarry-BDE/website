@@ -16,6 +16,7 @@ export default function AdminSubscriptions() {
 
   // Create form state
   const [users, setUsers] = useState<User[]>([]);
+  const [userSearch, setUserSearch] = useState('');
   const [newSub, setNewSub] = useState({
     utilisateur_id: 0,
     type: 'mensuel' as 'mensuel' | 'annuel' | 'evenement',
@@ -23,7 +24,7 @@ export default function AdminSubscriptions() {
     description: '',
     date_debut: new Date().toISOString().split('T')[0],
     date_fin: '',
-    prix: 0,
+    prix: '' as string | number,
   });
   const [isCreating, setIsCreating] = useState(false);
 
@@ -68,6 +69,7 @@ export default function AdminSubscriptions() {
     setIsCreating(true);
     const response = await api.createSubscription({
       ...newSub,
+      prix: Number(newSub.prix) || 0,
       date_fin: newSub.date_fin || undefined,
     });
 
@@ -80,8 +82,9 @@ export default function AdminSubscriptions() {
         description: '',
         date_debut: new Date().toISOString().split('T')[0],
         date_fin: '',
-        prix: 0,
+        prix: '',
       });
+      setUserSearch('');
       loadSubscriptions();
     } else {
       alert(response.error || 'Erreur lors de la création');
@@ -115,6 +118,16 @@ export default function AdminSubscriptions() {
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(price);
   };
+
+  const filteredUsers = users.filter((user) => {
+    if (!userSearch.trim()) return true;
+    const search = userSearch.toLowerCase();
+    return (
+      user.nom.toLowerCase().includes(search) ||
+      user.prenom.toLowerCase().includes(search) ||
+      user.email.toLowerCase().includes(search)
+    );
+  });
 
   const totalPages = Math.ceil(total / 20);
 
@@ -241,18 +254,32 @@ export default function AdminSubscriptions() {
             <form onSubmit={handleCreate} className="dashboard-form">
               <div className="dashboard-form-group">
                 <label>Utilisateur *</label>
+                <input
+                  type="text"
+                  placeholder="Rechercher un utilisateur..."
+                  value={userSearch}
+                  onChange={(e) => setUserSearch(e.target.value)}
+                  style={{ marginBottom: '0.5rem' }}
+                />
                 <select
                   value={newSub.utilisateur_id}
                   onChange={(e) => setNewSub({ ...newSub, utilisateur_id: parseInt(e.target.value) })}
                   required
+                  size={5}
+                  style={{ height: 'auto' }}
                 >
-                  <option value={0}>Sélectionner un utilisateur</option>
-                  {users.map((user) => (
+                  <option value={0} disabled>Sélectionner un utilisateur</option>
+                  {filteredUsers.map((user) => (
                     <option key={user.id} value={user.id}>
-                      {user.prenom} {user.nom} ({user.email})
+                      {user.prenom.toUpperCase()} {user.nom.toUpperCase()} ({user.email})
                     </option>
                   ))}
                 </select>
+                {filteredUsers.length === 0 && userSearch && (
+                  <small style={{ color: '#666', marginTop: '0.25rem', display: 'block' }}>
+                    Aucun utilisateur trouvé pour &quot;{userSearch}&quot;
+                  </small>
+                )}
               </div>
 
               <div className="dashboard-form-group">
@@ -285,8 +312,9 @@ export default function AdminSubscriptions() {
                     step="0.01"
                     min="0"
                     value={newSub.prix}
-                    onChange={(e) => setNewSub({ ...newSub, prix: parseFloat(e.target.value) })}
+                    onChange={(e) => setNewSub({ ...newSub, prix: e.target.value })}
                     required
+                    placeholder="0.00"
                   />
                 </div>
               </div>
