@@ -7,6 +7,7 @@ import AdminUsers from '@/components/admin/AdminUsers';
 import AdminSubscriptions from '@/components/admin/AdminSubscriptions';
 import AdminBroadcast from '@/components/admin/AdminBroadcast';
 import AdminStats from '@/components/admin/AdminStats';
+import { IconBarChart, IconUsers, IconCreditCard, IconMegaphone, IconArrowLeft, IconShield } from '@/components/Icons';
 import '../dashboard/dashboard.css';
 import './admin.css';
 
@@ -40,11 +41,11 @@ export default function AdminPage() {
     return null;
   }
 
-  const tabs: { id: TabType; label: string; icon: string }[] = [
-    { id: 'stats', label: 'Statistiques', icon: '📊' },
-    { id: 'users', label: 'Utilisateurs', icon: '👥' },
-    { id: 'subscriptions', label: 'Abonnements', icon: '💳' },
-    { id: 'broadcast', label: 'Annonces', icon: '📢' },
+  const tabs: { id: TabType; label: string; icon: React.ReactNode }[] = [
+    { id: 'stats', label: 'Statistiques', icon: <IconBarChart size={18} /> },
+    { id: 'users', label: 'Utilisateurs', icon: <IconUsers size={18} /> },
+    { id: 'subscriptions', label: 'Abonnements', icon: <IconCreditCard size={18} /> },
+    { id: 'broadcast', label: 'Annonces', icon: <IconMegaphone size={18} /> },
   ];
 
   const renderContent = () => {
@@ -67,7 +68,7 @@ export default function AdminPage() {
       <aside className="dashboard-sidebar admin-sidebar">
         <div className="dashboard-sidebar-header">
           <div className="dashboard-user-avatar admin-avatar">
-            👑
+            <IconShield size={20} />
           </div>
           <div className="dashboard-user-info">
             <strong>Administration</strong>
@@ -93,7 +94,7 @@ export default function AdminPage() {
             className="dashboard-nav-item"
             onClick={() => router.push('/dashboard')}
           >
-            <span className="dashboard-nav-icon">← </span>
+            <span className="dashboard-nav-icon"><IconArrowLeft size={18} /></span>
             Mon espace
           </button>
         </div>
