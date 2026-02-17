@@ -119,14 +119,3 @@ export default function CGV() {
     </article>
   );
 }
-
-      <section className="cgv-section">
-        <h2 className="cgv-subtitle">Article 8. Règlement des litiges</h2>
-        <p className="cgv-content">
-          Les présentes conditions de vente en ligne sont soumises à la loi française. En cas de litige, la compétence est attribuée aux tribunaux compétents, 
-          nonobstant pluralité de défendeurs ou appel en garantie.
-        </p>
-      </section>
-    </article>
-  );
-}
