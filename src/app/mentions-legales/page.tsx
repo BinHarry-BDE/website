@@ -18,11 +18,13 @@ export default function MentionsLegales() {
         Merci de lire attentivement ces informations légales avant de consulter le site.
       </p>
 
+
       <section className="mentions-section">
         <h2 className="mentions-subtitle">ÉDITEUR DU SITE</h2>
         <p className="mentions-content">
-          Ce site est édité par :<br />
-          <strong>RaceUp</strong> (https://race-up.net)<br />
+          Ce site est créé et édité par :<br />
+          <strong><a href="https://race-up.net" target="_blank" rel="noopener noreferrer">RaceUp</a></strong> (https://race-up.net)<br />
+          65 TER boulevard du Dr Roux, 51100 Reims, France<br />
           <br />
           Pour le compte de l’association BDE BinHarry<br />
           Contact : bdebinharry@gmail.com
@@ -36,11 +38,12 @@ export default function MentionsLegales() {
         </p>
       </section>
 
+
       <section className="mentions-section">
         <h2 className="mentions-subtitle">HÉBERGEMENT</h2>
         <p className="mentions-content">
           Ce site est hébergé par :<br />
-          <strong>Cloudflare, Inc.</strong><br />
+          <strong><a href="https://www.cloudflare.com/" target="_blank" rel="noopener noreferrer">Cloudflare, Inc.</a></strong><br />
           101 Townsend St, San Francisco, CA 94107, États-Unis<br />
           https://www.cloudflare.com/
         </p>
