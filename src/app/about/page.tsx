@@ -38,27 +38,57 @@ export default function AboutPage() {
 
       <section className="about-section">
         <h2>Ce que nous faisons</h2>
-        <div className="about-features">
-          <div className="about-feature">
-            <div className="about-feature-icon">🎉</div>
-            <h3>Événements</h3>
-            <p>Soirées, sorties, tournois gaming et bien plus encore pour renforcer les liens entre étudiants.</p>
-          </div>
-          <div className="about-feature">
-            <div className="about-feature-icon">📚</div>
-            <h3>Tutorat</h3>
-            <p>Entraide entre étudiants pour réussir ensemble. Les anciens accompagnent les nouveaux.</p>
-          </div>
-          <div className="about-feature">
-            <div className="about-feature-icon">🛒</div>
-            <h3>Boutique</h3>
-            <p>Goodies, vêtements et accessoires aux couleurs de BinHarry pour afficher ton appartenance.</p>
-          </div>
-          <div className="about-feature">
-            <div className="about-feature-icon">💬</div>
-            <h3>Communauté</h3>
-            <p>Un Discord actif pour échanger, poser des questions et ne rien rater des actualités.</p>
-          </div>
+        <div className="about-activities">
+          <article className="about-activity">
+            <div className="about-activity-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M8 21h8m-4-4v4m-4-8a4 4 0 0 1 8 0c0 1.5-1 2-1 3H9c0-1-1-1.5-1-3z"/>
+                <path d="M12 5V3M5.6 5.6l1.4 1.4M3 12h2m14 0h2m-3 -6.4l-1.4 1.4"/>
+              </svg>
+            </div>
+            <div className="about-activity-content">
+              <h3>Événements</h3>
+              <p>Soirées, sorties, tournois gaming et bien plus encore pour renforcer les liens entre étudiants.</p>
+            </div>
+          </article>
+          <article className="about-activity">
+            <div className="about-activity-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                <path d="M8 7h8m-8 4h6"/>
+              </svg>
+            </div>
+            <div className="about-activity-content">
+              <h3>Tutorat</h3>
+              <p>Entraide entre étudiants pour réussir ensemble. Les anciens accompagnent les nouveaux.</p>
+            </div>
+          </article>
+          <article className="about-activity">
+            <div className="about-activity-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+                <line x1="3" y1="6" x2="21" y2="6"/>
+                <path d="M16 10a4 4 0 0 1-8 0"/>
+              </svg>
+            </div>
+            <div className="about-activity-content">
+              <h3>Boutique</h3>
+              <p>Goodies, vêtements et accessoires aux couleurs de BinHarry pour afficher ton appartenance.</p>
+            </div>
+          </article>
+          <article className="about-activity">
+            <div className="about-activity-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M17 8h2a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2h-2v4l-4-4H9a2 2 0 0 1-2-2v-1"/>
+                <path d="M15 2H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2v4l4-4h4a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2z"/>
+              </svg>
+            </div>
+            <div className="about-activity-content">
+              <h3>Communauté</h3>
+              <p>Un Discord actif pour échanger, poser des questions et ne rien rater des actualités.</p>
+            </div>
+          </article>
         </div>
       </section>
 
