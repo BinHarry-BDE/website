@@ -1,3 +1,0 @@
-# Exclude cache from deployment to stay under Cloudflare Pages 25 MiB file limit
-cache/
-.next/cache/
