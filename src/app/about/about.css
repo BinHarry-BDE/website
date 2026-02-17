@@ -125,6 +125,107 @@
   background: #e2e8f0;
 }
 
+/* BDE Members Section */
+.about-section-bde {
+  background: linear-gradient(135deg, #f8fafc 0%, #e0f2fe 100%);
+  padding: 2rem;
+  border-radius: 16px;
+  margin: 3rem 0;
+}
+
+.about-bde-subtitle {
+  text-align: center;
+  color: #64748b;
+  margin-bottom: 2rem;
+  font-size: 1rem;
+}
+
+.about-bde-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.about-bde-card {
+  text-align: center;
+  transition: transform 0.2s;
+}
+
+.about-bde-card:hover {
+  transform: translateY(-4px);
+}
+
+.about-bde-avatar {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  margin: 0 auto 1rem;
+}
+
+.about-bde-avatar img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid #00b4d8;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.about-bde-avatar-placeholder {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #00b4d8, #0096c7);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: 700;
+  border: 4px solid #00b4d8;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.about-bde-badge {
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.about-bde-badge-founder {
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  color: #78350f;
+}
+
+.about-bde-badge-admin {
+  background: linear-gradient(135deg, #06b6d4, #0891b2);
+  color: white;
+}
+
+.about-bde-name {
+  font-size: 1rem;
+  color: #1b263b;
+  margin: 0;
+  font-weight: 600;
+}
+
+.about-bde-loading,
+.about-bde-empty {
+  text-align: center;
+  color: #64748b;
+  padding: 2rem;
+  font-style: italic;
+}
+
 @media (max-width: 640px) {
   .about-hero h1 {
     font-size: 2rem;
@@ -132,6 +233,20 @@
   
   .about-features {
     grid-template-columns: 1fr;
+  }
+
+  .about-bde-grid {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .about-bde-avatar {
+    width: 100px;
+    height: 100px;
+  }
+
+  .about-section-bde {
+    padding: 1.5rem;
   }
   
   .about-cta {
