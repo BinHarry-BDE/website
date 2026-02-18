@@ -1,6 +1,6 @@
 import type { ApiResponse, AuthResponse, User, PaginatedResponse, Message, Abonnement, UpdateUserData, PublicMember, BDEMember, Annonce, AdminUserStats } from '@/types';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8787';
+const API_URL = (process.env.NEXT_PUBLIC_API_URL || 'https://binharry-api.bdebinharry.workers.dev').replace(/\/+$/, '');
 
 class ApiClient {
   private baseUrl: string;
