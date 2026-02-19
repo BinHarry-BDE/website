@@ -69,7 +69,7 @@ class ApiClient {
       if (error instanceof TypeError && error.message === 'Failed to fetch') {
         // En développement, si l'API locale n'est pas disponible, utiliser l'API de production en fallback
         if (process.env.NODE_ENV === 'development' && this.baseUrl.includes('localhost')) {
-          const productionUrl = 'https://binharry-api.jacqueslucas-m2101.workers.dev';
+          const productionUrl = 'https://binharry-api.bdebinharry.workers.dev';
           try {
             const response = await fetch(`${productionUrl}${endpoint}`, {
               ...options,
