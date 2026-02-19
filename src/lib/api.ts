@@ -50,10 +50,62 @@ class ApiClient {
         credentials: 'include',
       });
 
+      // Vérifier si la réponse est OK avant de parser le JSON
+      if (!response.ok) {
+        // Essayer de parser le JSON d'erreur si disponible
+        try {
+          const errorData = await response.json();
+          return { success: false, error: errorData.error || `Erreur HTTP ${response.status}` };
+        } catch {
+          return { success: false, error: `Erreur HTTP ${response.status}` };
+        }
+      }
+
       const data = await response.json();
       return data;
     } catch (error) {
-      console.error('API Error:', error);
+      // Gérer les erreurs de réseau de manière silencieuse en développement
+      // pour éviter les erreurs dans la console Next.js
+      if (error instanceof TypeError && error.message === 'Failed to fetch') {
+        // En développement, si l'API locale n'est pas disponible, utiliser l'API de production en fallback
+        if (process.env.NODE_ENV === 'development' && this.baseUrl.includes('localhost')) {
+          const productionUrl = 'https://binharry-api.jacqueslucas-m2101.workers.dev';
+          try {
+            const response = await fetch(`${productionUrl}${endpoint}`, {
+              ...options,
+              headers,
+              credentials: 'include',
+            });
+
+            if (!response.ok) {
+              try {
+                const errorData = await response.json();
+                return { success: false, error: errorData.error || `Erreur HTTP ${response.status}` };
+              } catch {
+                return { success: false, error: `Erreur HTTP ${response.status}` };
+              }
+            }
+
+            const data = await response.json();
+            return data;
+          } catch (fallbackError) {
+            // Si même le fallback échoue, retourner une erreur claire
+            return { 
+              success: false, 
+              error: 'Impossible de se connecter à l\'API. Vérifiez que l\'API locale est démarrée (npm run dev dans BinHarry_API) ou que l\'API de production est accessible.' 
+            };
+          }
+        }
+        return { 
+          success: false, 
+          error: 'Erreur de connexion au serveur. Vérifiez que l\'API est démarrée et accessible.' 
+        };
+      }
+      
+      // Pour les autres erreurs, logger seulement en développement
+      if (process.env.NODE_ENV === 'development') {
+        console.error('API Error:', error);
+      }
       return { success: false, error: 'Erreur de connexion au serveur' };
     }
   }
