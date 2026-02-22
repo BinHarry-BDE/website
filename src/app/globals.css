@@ -804,10 +804,303 @@ main {
   margin-top: 0.25rem;
 }
 
+/* ========== GAMEJAM HOME CTA ========== */
+.gamejam-home-cta {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 1.5rem;
+  background: linear-gradient(145deg, #172554 0%, #1e293b 100%);
+  border-radius: 16px;
+  padding: 2rem;
+  color: white;
+}
+
+.gamejam-home-cta-content .section-label {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.gamejam-home-cta-content .section-title {
+  color: white;
+}
+
+.gamejam-home-cta-content .section-desc {
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 1.5rem;
+}
+
+.gamejam-home-cta-visual {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  align-content: center;
+}
+
+.gamejam-mini-card {
+  border-radius: 12px;
+  min-height: 90px;
+  padding: 1rem;
+  font-weight: 700;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.2);
+}
+
+.gamejam-mini-card-1 {
+  grid-column: span 2;
+  background: linear-gradient(145deg, #f59e0b, #f97316);
+  color: #1f2937;
+}
+
+.gamejam-mini-card-2 {
+  background: linear-gradient(145deg, #cbd5e1, #94a3b8);
+  color: #1f2937;
+}
+
+.gamejam-mini-card-3 {
+  background: linear-gradient(145deg, #fdba74, #fb923c);
+  color: #1f2937;
+}
+
+/* ========== GAMEJAM PAGE ========== */
+.gamejam-page {
+  padding: 2.5rem 0 1rem;
+}
+
+.gamejam-header {
+  margin-bottom: 2rem;
+}
+
+.gamejam-title {
+  font-size: 2.1rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 0.75rem;
+}
+
+.gamejam-subtitle {
+  color: #475569;
+  max-width: 750px;
+  line-height: 1.6;
+}
+
+.gamejam-years {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.gamejam-year-block {
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 1.5rem;
+  background: #ffffff;
+}
+
+.gamejam-year-head h2 {
+  font-size: 1.35rem;
+  color: #0f172a;
+  margin-bottom: 0.5rem;
+}
+
+.gamejam-year-intro {
+  margin-bottom: 1.25rem;
+}
+
+.gamejam-year-intro h3 {
+  font-size: 1.05rem;
+  color: #0f172a;
+  margin-bottom: 0.35rem;
+}
+
+.gamejam-year-intro p {
+  color: #64748b;
+  font-size: 0.92rem;
+}
+
+.gamejam-podium-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.gamejam-card {
+  position: relative;
+  border-radius: 14px;
+  border: 1px solid #e2e8f0;
+  overflow: hidden;
+  background: #f8fafc;
+}
+
+.gamejam-rank-badge {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  padding: 0.3rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.gamejam-rank-1 .gamejam-rank-badge {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.gamejam-rank-2 .gamejam-rank-badge {
+  background: #e2e8f0;
+  color: #334155;
+}
+
+.gamejam-rank-3 .gamejam-rank-badge {
+  background: #fed7aa;
+  color: #9a3412;
+}
+
+.gamejam-image-placeholder {
+  min-height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  color: #64748b;
+  background:
+    linear-gradient(135deg, rgba(148, 163, 184, 0.2) 0%, rgba(203, 213, 225, 0.3) 100%),
+    repeating-linear-gradient(
+      -45deg,
+      rgba(100, 116, 139, 0.12) 0,
+      rgba(100, 116, 139, 0.12) 10px,
+      transparent 10px,
+      transparent 20px
+    );
+  padding: 1rem;
+  text-align: center;
+}
+
+.gamejam-card-content {
+  padding: 1rem;
+}
+
+.gamejam-card-content h3 {
+  font-size: 1rem;
+  color: #0f172a;
+  margin-bottom: 0.35rem;
+}
+
+.gamejam-card-content p {
+  color: #475569;
+  font-size: 0.9rem;
+  margin-bottom: 0.75rem;
+}
+
+.gamejam-link {
+  color: #1d4ed8;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  font-size: 0.9rem;
+}
+
+.gamejam-link:hover {
+  color: #1e40af;
+}
+
+.gamejam-all-games {
+  margin-top: 1.6rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid #e2e8f0;
+}
+
+.gamejam-all-games-head {
+  margin-bottom: 1rem;
+}
+
+.gamejam-all-games-head h3 {
+  font-size: 1.05rem;
+  color: #0f172a;
+  margin-bottom: 0.35rem;
+}
+
+.gamejam-all-games-head p {
+  color: #64748b;
+  font-size: 0.92rem;
+}
+
+.gamejam-all-games-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.9rem;
+}
+
+.gamejam-all-game-card {
+  position: relative;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff;
+}
+
+.gamejam-top-badge {
+  position: absolute;
+  top: 0.55rem;
+  left: 0.55rem;
+  border-radius: 999px;
+  background: #fff7ed;
+  color: #9a3412;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.2rem 0.5rem;
+  z-index: 1;
+}
+
+.gamejam-all-game-image {
+  min-height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.82rem;
+  color: #64748b;
+  background:
+    linear-gradient(135deg, rgba(148, 163, 184, 0.15) 0%, rgba(203, 213, 225, 0.25) 100%),
+    repeating-linear-gradient(
+      -45deg,
+      rgba(100, 116, 139, 0.1) 0,
+      rgba(100, 116, 139, 0.1) 10px,
+      transparent 10px,
+      transparent 20px
+    );
+  padding: 0.75rem;
+  text-align: center;
+}
+
+.gamejam-all-game-content {
+  padding: 0.75rem;
+}
+
+.gamejam-all-game-content h4 {
+  font-size: 0.95rem;
+  color: #0f172a;
+  margin-bottom: 0.3rem;
+}
+
+.gamejam-all-game-content p {
+  color: #475569;
+  font-size: 0.84rem;
+  margin-bottom: 0.55rem;
+}
+
 /* ========== RESPONSIVE ========== */
 @media (max-width: 1024px) {
   .shop-grid {
     grid-template-columns: repeat(4, 1fr);
+  }
+
+  .gamejam-podium-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .gamejam-all-games-grid {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
@@ -845,6 +1138,31 @@ main {
     grid-template-columns: repeat(3, 1fr);
     gap: 1rem;
   }
+
+  .gamejam-home-cta {
+    grid-template-columns: 1fr;
+    padding: 1.5rem;
+  }
+
+  .gamejam-home-cta-visual {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  .gamejam-mini-card-1 {
+    grid-column: span 1;
+  }
+
+  .gamejam-title {
+    font-size: 1.7rem;
+  }
+
+  .gamejam-podium-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .gamejam-all-games-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 @media (max-width: 540px) {
@@ -863,5 +1181,9 @@ main {
 
   .shop-card-price {
     font-size: 0.8125rem;
+  }
+
+  .gamejam-all-games-grid {
+    grid-template-columns: 1fr;
   }
 }

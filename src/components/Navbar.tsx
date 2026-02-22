@@ -41,6 +41,7 @@ export default function Navbar() {
         
         <nav className="navbar-nav">
           <Link href="/">Accueil</Link>
+          <Link href="/gamejam">GameJam</Link>
           <Link href="/boutique">Boutique</Link>
           
           <div className="navbar-user" ref={dropdownRef}>

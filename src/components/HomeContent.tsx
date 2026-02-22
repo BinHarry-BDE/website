@@ -151,6 +151,28 @@ export default function HomeContent() {
         </div>
       </section>
 
+      {/* GameJam Preview */}
+      <section className="home-section">
+        <div className="gamejam-home-cta">
+          <div className="gamejam-home-cta-content">
+            <span className="section-label">GAMEJAM</span>
+            <h2 className="section-title">Decouvre les jeux des etudiants</h2>
+            <p className="section-desc">
+              Chaque annee, nos etudiants creent des jeux en equipe pendant la GameJam.
+              Va voir les podiums et les projets gagnants.
+            </p>
+            <Link href="/gamejam" className="hero-btn hero-btn-primary">
+              Voir les jeux de la GameJam
+            </Link>
+          </div>
+          <div className="gamejam-home-cta-visual" aria-hidden="true">
+            <div className="gamejam-mini-card gamejam-mini-card-1">Top 1</div>
+            <div className="gamejam-mini-card gamejam-mini-card-2">Top 2</div>
+            <div className="gamejam-mini-card gamejam-mini-card-3">Top 3</div>
+          </div>
+        </div>
+      </section>
+
       {/* Boutique Preview */}
       <section className="home-section">
         <div className="section-header-row">
