@@ -901,7 +901,22 @@ main {
 .gamejam-year-head h2 {
   font-size: 1.35rem;
   color: #0f172a;
+  margin-bottom: 0.5rem;
+}
+
+.gamejam-year-intro {
   margin-bottom: 1.25rem;
+}
+
+.gamejam-year-intro h3 {
+  font-size: 1.05rem;
+  color: #0f172a;
+  margin-bottom: 0.35rem;
+}
+
+.gamejam-year-intro p {
+  color: #64748b;
+  font-size: 0.92rem;
 }
 
 .gamejam-podium-grid {
@@ -990,6 +1005,90 @@ main {
   color: #1e40af;
 }
 
+.gamejam-all-games {
+  margin-top: 1.6rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid #e2e8f0;
+}
+
+.gamejam-all-games-head {
+  margin-bottom: 1rem;
+}
+
+.gamejam-all-games-head h3 {
+  font-size: 1.05rem;
+  color: #0f172a;
+  margin-bottom: 0.35rem;
+}
+
+.gamejam-all-games-head p {
+  color: #64748b;
+  font-size: 0.92rem;
+}
+
+.gamejam-all-games-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.9rem;
+}
+
+.gamejam-all-game-card {
+  position: relative;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff;
+}
+
+.gamejam-top-badge {
+  position: absolute;
+  top: 0.55rem;
+  left: 0.55rem;
+  border-radius: 999px;
+  background: #fff7ed;
+  color: #9a3412;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.2rem 0.5rem;
+  z-index: 1;
+}
+
+.gamejam-all-game-image {
+  min-height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.82rem;
+  color: #64748b;
+  background:
+    linear-gradient(135deg, rgba(148, 163, 184, 0.15) 0%, rgba(203, 213, 225, 0.25) 100%),
+    repeating-linear-gradient(
+      -45deg,
+      rgba(100, 116, 139, 0.1) 0,
+      rgba(100, 116, 139, 0.1) 10px,
+      transparent 10px,
+      transparent 20px
+    );
+  padding: 0.75rem;
+  text-align: center;
+}
+
+.gamejam-all-game-content {
+  padding: 0.75rem;
+}
+
+.gamejam-all-game-content h4 {
+  font-size: 0.95rem;
+  color: #0f172a;
+  margin-bottom: 0.3rem;
+}
+
+.gamejam-all-game-content p {
+  color: #475569;
+  font-size: 0.84rem;
+  margin-bottom: 0.55rem;
+}
+
 /* ========== RESPONSIVE ========== */
 @media (max-width: 1024px) {
   .shop-grid {
@@ -998,6 +1097,10 @@ main {
 
   .gamejam-podium-grid {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  .gamejam-all-games-grid {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
@@ -1056,6 +1159,10 @@ main {
   .gamejam-podium-grid {
     grid-template-columns: 1fr;
   }
+
+  .gamejam-all-games-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 @media (max-width: 540px) {
@@ -1074,5 +1181,9 @@ main {
 
   .shop-card-price {
     font-size: 0.8125rem;
+  }
+
+  .gamejam-all-games-grid {
+    grid-template-columns: 1fr;
   }
 }
