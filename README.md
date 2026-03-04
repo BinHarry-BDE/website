@@ -2,7 +2,8 @@
 Site Web pour l'association BinHarry à l'IUT de reims dans le département informatique
 
 ## Developpement : 
-Le projet est OpenSource, vous êtes libre de participer a son développement
+Le projet est développé par les membres du BDE mais vous pouvez demandé en privé de participer a son developpement.
+Pour les futurs membres du BDE un fichier de note vous est adressé dans le dossier public/docs
 
 Les stacks technique Utiliser son : 
 - Next
