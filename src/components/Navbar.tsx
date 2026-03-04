@@ -8,6 +8,7 @@ import { useAuth } from '@/context/AuthContext';
 export default function Navbar() {
   const { user, isAuthenticated, isLoading, logout } = useAuth();
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -39,10 +40,21 @@ export default function Navbar() {
           BinHarry
         </Link>
         
-        <nav className="navbar-nav">
-          <Link href="/">Accueil</Link>
-          <Link href="/gamejam">GameJam</Link>
-          <Link href="/boutique">Boutique</Link>
+        <button
+          className={`navbar-mobile-toggle${mobileOpen ? ' is-open' : ''}`}
+          onClick={() => setMobileOpen(!mobileOpen)}
+          aria-expanded={mobileOpen}
+          aria-label="Menu de navigation"
+        >
+          <span />
+          <span />
+          <span />
+        </button>
+
+        <nav className={`navbar-nav${mobileOpen ? ' navbar-nav--open' : ''}`}>
+          <Link href="/" onClick={() => setMobileOpen(false)}>Accueil</Link>
+          <Link href="/gamejam" onClick={() => setMobileOpen(false)}>GameJam</Link>
+          <Link href="/boutique" onClick={() => setMobileOpen(false)}>Boutique</Link>
           
           <div className="navbar-user" ref={dropdownRef}>
             {isLoading ? (

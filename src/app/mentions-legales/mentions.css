@@ -6,27 +6,32 @@
 
 .mentions-title {
   text-align: center;
-  font-size: 2.5rem;
-  margin-bottom: 2rem;
-  color: #1a1a2e;
+  font-size: var(--text-4xl);
+  font-weight: var(--fw-extrabold);
+  margin-bottom: var(--space-8);
+  color: var(--color-primary-900);
+  letter-spacing: -0.02em;
 }
 
 .mentions-section {
-  margin-bottom: 2.5rem;
+  margin-bottom: var(--space-10);
 }
 
 .mentions-subtitle {
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
-  color: #1a1a2e;
-  border-bottom: 2px solid #e0e0e0;
-  padding-bottom: 0.5rem;
+  font-size: var(--text-2xl);
+  font-weight: var(--fw-bold);
+  margin-bottom: var(--space-4);
+  color: var(--color-primary-900);
+  border-bottom: 2px solid var(--color-accent);
+  padding-bottom: var(--space-2);
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  display: inline-block;
 }
 
 .mentions-content {
-  line-height: 1.6;
-  color: #333;
-  margin-bottom: 1rem;
+  line-height: var(--leading-relaxed);
+  color: var(--color-gray-700);
+  margin-bottom: var(--space-4);
+  font-size: var(--text-base);
 }

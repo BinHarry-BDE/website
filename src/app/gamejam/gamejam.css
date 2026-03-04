@@ -49,10 +49,16 @@
 }
 
 .gamejam-year-block {
-  border: 1px solid #e2e8f0;
-  border-radius: 16px;
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius-xl);
   padding: 1.5rem;
-  background: #ffffff;
+  background: var(--surface-card);
+  box-shadow: var(--shadow-xs);
+  transition: box-shadow var(--transition-base);
+}
+
+.gamejam-year-block:hover {
+  box-shadow: var(--shadow-md);
 }
 
 .gamejam-year-head h2 {
@@ -138,14 +144,15 @@
 }
 
 .gamejam-link {
-  color: #1d4ed8;
+  color: var(--color-accent);
   text-decoration: underline;
   text-underline-offset: 3px;
   font-size: 0.9rem;
+  font-weight: var(--fw-medium);
 }
 
 .gamejam-link:hover {
-  color: #1e40af;
+  color: var(--color-primary-500);
 }
 
 .gamejam-all-games {

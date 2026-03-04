@@ -1,5 +1,5 @@
 .admin-sidebar {
-  background: #1a1a2e;
+  background: var(--color-primary-900);
 }
 
 .admin-sidebar .dashboard-sidebar-header {
@@ -30,8 +30,8 @@
 }
 
 .admin-sidebar .dashboard-nav-item.active {
-  background: white;
-  color: #1a1a2e;
+  background: var(--color-accent);
+  color: white;
 }
 
 .admin-back-link {
@@ -79,8 +79,8 @@
 
 .stat-value {
   font-size: 2rem;
-  font-weight: 700;
-  color: #1a1a2e;
+  font-weight: var(--fw-extrabold);
+  color: var(--color-primary-900);
 }
 
 .stat-label {
@@ -213,7 +213,8 @@
 .admin-filters input:focus,
 .admin-filters select:focus {
   outline: none;
-  border-color: #1a1a2e;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px var(--color-accent-glow);
 }
 
 /* Modal */
@@ -248,7 +249,8 @@
 
 .modal-header h2 {
   margin: 0;
-  color: #1a1a2e;
+  color: var(--color-primary-900);
+  font-weight: var(--fw-semibold);
 }
 
 .modal-close {
@@ -381,8 +383,8 @@
 }
 
 .sub-type-name {
-  font-weight: 600;
-  color: #1a1a2e;
+  font-weight: var(--fw-semibold);
+  color: var(--color-primary-900);
   margin-bottom: 0.25rem;
   text-transform: capitalize;
 }

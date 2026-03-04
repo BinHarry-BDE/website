@@ -26,11 +26,16 @@ export default function HomeContent() {
       <section className="hero">
         <div className="hero-bg" />
         <div className="hero-content">
+          <span className="hero-badge">BDE BUT Informatique Reims</span>
           <h1 className="hero-title">BinHarry</h1>
           <p className="hero-subtitle">Le BDE du BUT Informatique de Reims</p>
           <p className="hero-desc">
             Rejoins la communauté ! Soirées, événements, tutorat et bien plus encore.
           </p>
+          <div className="hero-actions">
+            <Link href="/auth" className="hero-btn hero-btn-primary">Rejoindre BinHarry</Link>
+            <Link href="/about" className="hero-btn hero-btn-secondary">En savoir plus</Link>
+          </div>
         </div>
       </section>
 
