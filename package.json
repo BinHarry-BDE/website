@@ -12,7 +12,6 @@
     "preview": "opennextjs-cloudflare preview"
   },
   "dependencies": {
-    "@next/swc-win32-x64-msvc": "^16.1.6",
     "next": "^15.1.12",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
