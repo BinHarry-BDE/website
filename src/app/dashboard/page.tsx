@@ -7,13 +7,14 @@ import DashboardProfile from '@/components/dashboard/DashboardProfile';
 import DashboardSubscriptions from '@/components/dashboard/DashboardSubscriptions';
 import DashboardMailbox from '@/components/dashboard/DashboardMailbox';
 import DashboardSettings from '@/components/dashboard/DashboardSettings';
+import DashboardGameJam from '@/components/dashboard/DashboardGameJam';
 import EmailVerificationBanner from '@/components/dashboard/EmailVerificationBanner';
-import { IconUser, IconCreditCard, IconMail, IconSettings } from '@/components/Icons';
+import { IconUser, IconCreditCard, IconMail, IconSettings, IconGamepad } from '@/components/Icons';
 import './dashboard.css';
 import './dragAndDrop.css';
 import '../admin/admin.css';
 
-type TabType = 'profile' | 'subscriptions' | 'mailbox' | 'settings';
+type TabType = 'profile' | 'subscriptions' | 'mailbox' | 'gamejam' | 'settings';
 
 export default function DashboardPage() {
   const { user, isAuthenticated, isLoading } = useAuth();
@@ -43,6 +44,7 @@ export default function DashboardPage() {
     { id: 'profile', label: 'Mon profil', icon: <IconUser size={18} /> },
     { id: 'subscriptions', label: 'Abonnements', icon: <IconCreditCard size={18} /> },
     { id: 'mailbox', label: 'Messagerie', icon: <IconMail size={18} /> },
+    { id: 'gamejam', label: 'GameJam', icon: <IconGamepad size={18} /> },
     { id: 'settings', label: 'Paramètres', icon: <IconSettings size={18} /> },
   ];
 
@@ -54,6 +56,8 @@ export default function DashboardPage() {
         return <DashboardSubscriptions />;
       case 'mailbox':
         return <DashboardMailbox />;
+      case 'gamejam':
+        return <DashboardGameJam />;
       case 'settings':
         return <DashboardSettings />;
       default:
