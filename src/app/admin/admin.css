@@ -328,6 +328,41 @@
   padding: 0.5rem 0.25rem 0;
 }
 
+/* Chart Tooltip */
+.chart-tooltip {
+  background: rgba(0, 0, 0, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  padding: 8px 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.chart-tooltip-label {
+  color: #fff;
+  font-size: 12px;
+  margin: 0 0 4px 0;
+  font-weight: 600;
+}
+
+.chart-tooltip-value {
+  color: #e0e7ff;
+  font-size: 14px;
+  margin: 0;
+  font-weight: 500;
+}
+
+/* Empty Chart */
+.chart-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 280px;
+  color: #9ca3af;
+  font-style: italic;
+  background: #f9fafb;
+  border-radius: 8px;
+}
+
 .line-chart-svg {
   width: 100%;
   height: 100%;

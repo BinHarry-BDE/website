@@ -1,21 +1,16 @@
 'use client';
 
 import { useState, useEffect, useCallback, useId } from 'react';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { api } from '@/lib/api';
 import { IconUsers, IconUserCheck, IconTrendingUp, IconDollarSign, IconActivity, IconRefresh } from '@/components/Icons';
 import type { AdminUserStats } from '@/types';
 
-function formatChartLabel(rawLabel: string): string {
+function formatChartDate(rawLabel: string): string {
   if (/^\d{4}-\d{2}$/.test(rawLabel)) {
     const [year, month] = rawLabel.split('-').map(Number);
     const date = new Date(year, (month || 1) - 1, 1);
-    return date.toLocaleDateString('fr-FR', { month: 'short', year: 'numeric' });
-  }
-
-  if (/^\d{2}-\d{2}$/.test(rawLabel)) {
-    const [month, day] = rawLabel.split('-').map(Number);
-    const date = new Date(new Date().getFullYear(), (month || 1) - 1, day || 1);
-    return date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' });
+    return date.toLocaleDateString('fr-FR', { month: 'short', year: '2-digit' });
   }
 
   if (/^\d{4}-\d{2}-\d{2}$/.test(rawLabel)) {
@@ -28,106 +23,30 @@ function formatChartLabel(rawLabel: string): string {
   return rawLabel;
 }
 
-function buildSmoothPath(points: Array<{ x: number; y: number }>): string {
-  if (points.length === 0) return '';
-  if (points.length === 1) return `M ${points[0].x} ${points[0].y} L ${points[0].x} ${points[0].y}`;
-  let path = `M ${points[0].x} ${points[0].y}`;
-
-  for (let i = 0; i < points.length - 1; i += 1) {
-    const p0 = points[i - 1] || points[i];
-    const p1 = points[i];
-    const p2 = points[i + 1];
-    const p3 = points[i + 2] || p2;
-
-    const c1x = p1.x + (p2.x - p0.x) / 6;
-    const c1y = p1.y + (p2.y - p0.y) / 6;
-    const c2x = p2.x - (p3.x - p1.x) / 6;
-    const c2y = p2.y - (p3.y - p1.y) / 6;
-
-    path += ` C ${c1x} ${c1y}, ${c2x} ${c2y}, ${p2.x} ${p2.y}`;
+function CustomTooltip({ active, payload }: any) {
+  if (active && payload && payload.length) {
+    const data = payload[0];
+    return (
+      <div className="chart-tooltip">
+        <p className="chart-tooltip-label">{formatChartDate(String(data.payload.month || data.payload.day))}</p>
+        <p className="chart-tooltip-value">{data.value} inscription{data.value > 1 ? 's' : ''}</p>
+      </div>
+    );
   }
-
-  return path;
+  return null;
 }
 
-function LineChart({ data, labelKey, valueKey, color = '#1a1a2e', height = 220 }: {
-  data: Array<Record<string, unknown>>;
-  labelKey: string;
-  valueKey: string;
-  color?: string;
-  height?: number;
-}) {
-  const gradientId = useId().replace(/:/g, '');
-  if (!data.length) return <div className="chart-empty">Aucune donnee</div>;
-
-  const values = data.map(d => Number(d[valueKey]) || 0);
-  const max = Math.max(...values, 1);
-  const width = 680;
-  const marginTop = 12;
-  const marginRight = 12;
-  const marginBottom = 38;
-  const marginLeft = 40;
-  const innerWidth = width - marginLeft - marginRight;
-  const innerHeight = height - marginTop - marginBottom;
-
-  const points = data.map((d, i) => {
-    const val = Number(d[valueKey]) || 0;
-    const ratio = max === 0 ? 0 : val / max;
-    const x = marginLeft + (data.length === 1 ? innerWidth / 2 : (i / (data.length - 1)) * innerWidth);
-    const y = marginTop + innerHeight - ratio * innerHeight;
-    return { x, y, value: val, label: formatChartLabel(String(d[labelKey])) };
-  });
-
-  const plotPoints = points.length === 1
-    ? [
-        { x: marginLeft, y: points[0].y },
-        points[0],
-        { x: width - marginRight, y: points[0].y },
-      ]
-    : points;
-
-  const linePath = buildSmoothPath(plotPoints);
-  const areaPath = `${linePath} L ${plotPoints[plotPoints.length - 1].x} ${marginTop + innerHeight} L ${plotPoints[0].x} ${marginTop + innerHeight} Z`;
-  const yTicks = [0, Math.round(max / 3), Math.round((2 * max) / 3), max]
-    .filter((v, i, arr) => arr.indexOf(v) === i)
-    .sort((a, b) => a - b);
-
-  return (
-    <div className="line-chart-wrapper" style={{ height }}>
-      <svg viewBox={`0 0 ${width} ${height}`} className="line-chart-svg" role="img" aria-label="Graphique en courbe">
-        <defs>
-          <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor={color} stopOpacity="0.18" />
-            <stop offset="100%" stopColor={color} stopOpacity="0.03" />
-          </linearGradient>
-        </defs>
-
-        {yTicks.map((tick) => {
-          const y = marginTop + innerHeight - (tick / max) * innerHeight;
-          return (
-            <g key={tick}>
-              <line x1={marginLeft} y1={y} x2={width - marginRight} y2={y} className="line-chart-grid" />
-              <text x={marginLeft - 10} y={y + 4} className="line-chart-y-label">
-                {tick}
-              </text>
-            </g>
-          );
-        })}
-
-        <path d={areaPath} fill={`url(#${gradientId})`} />
-        <path d={linePath} fill="none" stroke={color} strokeWidth="3" strokeLinecap="round" />
-
-        {points.map((p, i) => (
-          <g key={`${p.label}-${i}`}>
-            <circle cx={p.x} cy={p.y} r="3.5" fill={color} className="line-chart-point" />
-            <text x={p.x} y={height - 10} className="line-chart-x-label" textAnchor="middle">
-              {p.label}
-            </text>
-          </g>
-        ))}
-      </svg>
-    </div>
-  );
+function CustomLoginTooltip({ active, payload }: any) {
+  if (active && payload && payload.length) {
+    const data = payload[0];
+    return (
+      <div className="chart-tooltip">
+        <p className="chart-tooltip-label">{formatChartDate(String(data.payload.day))}</p>
+        <p className="chart-tooltip-value">{data.value} connexion{data.value > 1 ? 's' : ''}</p>
+      </div>
+    );
+  }
+  return null;
 }
 
 export default function AdminStats() {
@@ -135,6 +54,7 @@ export default function AdminStats() {
   const [subStats, setSubStats] = useState<{ total: number; actifs: number; revenus: number; par_type: Array<{ type: string; count: number; total_prix: number }> } | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [lastRefresh, setLastRefresh] = useState<Date>(new Date());
+  const [autoRefreshInterval, setAutoRefreshInterval] = useState<NodeJS.Timeout | null>(null);
 
   const loadStats = useCallback(async () => {
     setIsLoading(true);
@@ -153,8 +73,19 @@ export default function AdminStats() {
     setIsLoading(false);
   }, []);
 
+  // Auto-refresh toutes les 30 secondes
   useEffect(() => {
     loadStats();
+    
+    const interval = setInterval(() => {
+      loadStats();
+    }, 30000); // 30 secondes
+    
+    setAutoRefreshInterval(interval);
+    
+    return () => {
+      if (interval) clearInterval(interval);
+    };
   }, [loadStats]);
 
   const formatCurrency = (amount: number) => {
@@ -238,12 +169,31 @@ export default function AdminStats() {
               Inscriptions par mois
             </h2>
           </div>
-          <LineChart
-            data={stats?.registrationsPerMonth || []}
-            labelKey="month"
-            valueKey="count"
-            color="#4f46e5"
-          />
+          {(stats?.registrationsPerMonth || []).length > 0 ? (
+            <ResponsiveContainer width="100%" height={280}>
+              <LineChart data={stats?.registrationsPerMonth || []}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                <XAxis 
+                  dataKey="month" 
+                  tickFormatter={formatChartDate}
+                  stroke="#6b7280"
+                  style={{ fontSize: '12px' }}
+                />
+                <YAxis stroke="#6b7280" style={{ fontSize: '12px' }} />
+                <Tooltip content={<CustomTooltip />} />
+                <Line 
+                  type="monotone" 
+                  dataKey="count" 
+                  stroke="#4f46e5" 
+                  strokeWidth={3}
+                  dot={{ fill: '#4f46e5', r: 4 }}
+                  activeDot={{ r: 6 }}
+                />
+              </LineChart>
+            </ResponsiveContainer>
+          ) : (
+            <div className="chart-empty">Aucune donnée</div>
+          )}
         </div>
 
         <div className="dashboard-card">
@@ -253,12 +203,31 @@ export default function AdminStats() {
               Connexions (7 derniers jours)
             </h2>
           </div>
-          <LineChart
-            data={stats?.loginsPerDay || []}
-            labelKey="day"
-            valueKey="count"
-            color="#059669"
-          />
+          {(stats?.loginsPerDay || []).length > 0 ? (
+            <ResponsiveContainer width="100%" height={280}>
+              <LineChart data={stats?.loginsPerDay || []}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                <XAxis 
+                  dataKey="day" 
+                  tickFormatter={formatChartDate}
+                  stroke="#6b7280"
+                  style={{ fontSize: '12px' }}
+                />
+                <YAxis stroke="#6b7280" style={{ fontSize: '12px' }} />
+                <Tooltip content={<CustomLoginTooltip />} />
+                <Line 
+                  type="monotone" 
+                  dataKey="count" 
+                  stroke="#059669" 
+                  strokeWidth={3}
+                  dot={{ fill: '#059669', r: 4 }}
+                  activeDot={{ r: 6 }}
+                />
+              </LineChart>
+            </ResponsiveContainer>
+          ) : (
+            <div className="chart-empty">Aucune donnée</div>
+          )}
         </div>
       </div>
 
