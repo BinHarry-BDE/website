@@ -12,6 +12,8 @@ import type {
   AdminUserStats,
   GameJamReactionType,
   GameJamReactionsPayload,
+  GameJamEdition,
+  GameJamEquipe,
 } from '@/types';
 
 const API_URL = (process.env.NEXT_PUBLIC_API_URL || 'https://binharry-api.bdebinharry.workers.dev').replace(/\/+$/, '');
@@ -360,6 +362,99 @@ class ApiClient {
         reaction,
       }),
     });
+  }
+
+  // GameJam Editions
+  async getGameJamEditions(): Promise<ApiResponse<GameJamEdition[]>> {
+    return this.request<GameJamEdition[]>('/api/gamejam/editions');
+  }
+
+  async createGameJamEdition(data: {
+    year: string;
+    theme?: string;
+    description?: string;
+    date_debut?: string;
+    date_fin?: string;
+  }): Promise<ApiResponse<void>> {
+    return this.request<void>('/api/gamejam/editions', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  }
+
+  async deleteGameJamEdition(year: string): Promise<ApiResponse<void>> {
+    return this.request<void>(`/api/gamejam/editions/${encodeURIComponent(year)}`, {
+      method: 'DELETE',
+    });
+  }
+
+  // GameJam Equipes
+  async getGameJamEquipes(editionYear: string): Promise<ApiResponse<GameJamEquipe[]>> {
+    return this.request<GameJamEquipe[]>(`/api/gamejam/equipes?edition=${encodeURIComponent(editionYear)}`);
+  }
+
+  async createGameJamEquipe(data: {
+    edition_year: string;
+    nom: string;
+    nom_jeu?: string;
+    description?: string;
+    image_url?: string;
+    liens?: string[];
+  }): Promise<ApiResponse<{ id: number }>> {
+    return this.request<{ id: number }>('/api/gamejam/equipes', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  }
+
+  async updateGameJamEquipe(id: number, data: {
+    nom?: string;
+    nom_jeu?: string;
+    description?: string;
+    image_url?: string;
+    liens?: string[];
+  }): Promise<ApiResponse<void>> {
+    return this.request<void>(`/api/gamejam/equipes/${id}`, {
+      method: 'PATCH',
+      body: JSON.stringify(data),
+    });
+  }
+
+  async deleteGameJamEquipe(id: number): Promise<ApiResponse<void>> {
+    return this.request<void>(`/api/gamejam/equipes/${id}`, {
+      method: 'DELETE',
+    });
+  }
+
+  // GameJam team members (admin)
+  async addTeamMember(equipeId: number, utilisateurId: number): Promise<ApiResponse<void>> {
+    return this.request<void>(`/api/gamejam/equipes/${equipeId}/membres`, {
+      method: 'POST',
+      body: JSON.stringify({ utilisateur_id: utilisateurId }),
+    });
+  }
+
+  async removeTeamMember(equipeId: number, utilisateurId: number): Promise<ApiResponse<void>> {
+    return this.request<void>(`/api/gamejam/equipes/${equipeId}/membres/${utilisateurId}`, {
+      method: 'DELETE',
+    });
+  }
+
+  // GameJam self-inscription
+  async joinTeam(equipeId: number): Promise<ApiResponse<void>> {
+    return this.request<void>(`/api/gamejam/equipes/${equipeId}/rejoindre`, {
+      method: 'POST',
+    });
+  }
+
+  async leaveTeam(equipeId: number): Promise<ApiResponse<void>> {
+    return this.request<void>(`/api/gamejam/equipes/${equipeId}/quitter`, {
+      method: 'DELETE',
+    });
+  }
+
+  async getMyTeam(editionYear: string): Promise<ApiResponse<GameJamEquipe | null>> {
+    return this.request<GameJamEquipe | null>(`/api/gamejam/my-team?edition=${encodeURIComponent(editionYear)}`);
   }
 
   // Public
