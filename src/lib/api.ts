@@ -112,7 +112,7 @@ class ApiClient {
         }
         return { 
           success: false, 
-          error: 'Erreur de connexion au serveur. Vérifiez que l\'API est démarrée et accessible.' 
+          error: 'Erreur de connexion au serveur.' 
         };
       }
       
