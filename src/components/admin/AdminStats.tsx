@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback, useId } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { api } from '@/lib/api';
 import { IconUsers, IconUserCheck, IconTrendingUp, IconDollarSign, IconActivity, IconRefresh } from '@/components/Icons';
@@ -21,6 +21,23 @@ function formatChartDate(rawLabel: string): string {
   }
 
   return rawLabel;
+}
+
+function fillMissingDates(data: any[], key: string): any[] {
+  if (data.length === 0) return [];
+  if (data.length === 1) return data;
+
+  const filled: any[] = [];
+  const startDate = new Date(data[0][key]);
+  const endDate = new Date(data[data.length - 1][key]);
+
+  for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
+    const dateStr = d.toISOString().split('T')[0];
+    const existing = data.find(item => item[key] === dateStr);
+    filled.push(existing || { [key]: dateStr, count: 0 });
+  }
+
+  return filled;
 }
 
 function CustomTooltip({ active, payload }: any) {
@@ -171,23 +188,25 @@ export default function AdminStats() {
           </div>
           {(stats?.registrationsPerMonth || []).length > 0 ? (
             <ResponsiveContainer width="100%" height={280}>
-              <LineChart data={stats?.registrationsPerMonth || []}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+              <LineChart data={stats?.registrationsPerMonth || []} margin={{ top: 5, right: 30, left: 0, bottom: 5 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" vertical={false} />
                 <XAxis 
                   dataKey="month" 
                   tickFormatter={formatChartDate}
-                  stroke="#6b7280"
+                  stroke="#d1d5db"
                   style={{ fontSize: '12px' }}
                 />
-                <YAxis stroke="#6b7280" style={{ fontSize: '12px' }} />
-                <Tooltip content={<CustomTooltip />} />
+                <YAxis stroke="#d1d5db" style={{ fontSize: '12px' }} />
+                <Tooltip content={<CustomTooltip />} cursor={{ stroke: '#4f46e5', strokeWidth: 2 }} />
                 <Line 
-                  type="monotone" 
+                  type="natural" 
                   dataKey="count" 
                   stroke="#4f46e5" 
                   strokeWidth={3}
-                  dot={{ fill: '#4f46e5', r: 4 }}
-                  activeDot={{ r: 6 }}
+                  dot={{ fill: '#4f46e5', r: 5, strokeWidth: 2, stroke: 'white' }}
+                  activeDot={{ r: 7 }}
+                  isAnimationActive={true}
+                  animationDuration={1000}
                 />
               </LineChart>
             </ResponsiveContainer>
@@ -205,23 +224,25 @@ export default function AdminStats() {
           </div>
           {(stats?.loginsPerDay || []).length > 0 ? (
             <ResponsiveContainer width="100%" height={280}>
-              <LineChart data={stats?.loginsPerDay || []}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+              <LineChart data={fillMissingDates(stats?.loginsPerDay || [], 'day')} margin={{ top: 5, right: 30, left: 0, bottom: 5 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" vertical={false} />
                 <XAxis 
                   dataKey="day" 
                   tickFormatter={formatChartDate}
-                  stroke="#6b7280"
+                  stroke="#d1d5db"
                   style={{ fontSize: '12px' }}
                 />
-                <YAxis stroke="#6b7280" style={{ fontSize: '12px' }} />
-                <Tooltip content={<CustomLoginTooltip />} />
+                <YAxis stroke="#d1d5db" style={{ fontSize: '12px' }} />
+                <Tooltip content={<CustomLoginTooltip />} cursor={{ stroke: '#059669', strokeWidth: 2 }} />
                 <Line 
-                  type="monotone" 
+                  type="natural" 
                   dataKey="count" 
                   stroke="#059669" 
                   strokeWidth={3}
-                  dot={{ fill: '#059669', r: 4 }}
-                  activeDot={{ r: 6 }}
+                  dot={{ fill: '#059669', r: 5, strokeWidth: 2, stroke: 'white' }}
+                  activeDot={{ r: 7 }}
+                  isAnimationActive={true}
+                  animationDuration={1000}
                 />
               </LineChart>
             </ResponsiveContainer>
