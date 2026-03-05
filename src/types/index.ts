@@ -148,3 +148,35 @@ export interface GameJamReactionsPayload {
   userReactions: GameJamUserReaction[];
   adminDetails: GameJamAdminDetail[];
 }
+
+// GameJam Editions & Teams
+export interface GameJamEdition {
+  id: number;
+  year: string;
+  theme: string | null;
+  description: string | null;
+  date_debut: string | null;
+  date_fin: string | null;
+  is_active: number;
+  created_at: string;
+}
+
+export interface GameJamEquipeMember {
+  id: number;
+  nom: string;
+  prenom: string;
+  avatar_url: string | null;
+}
+
+export interface GameJamEquipe {
+  id: number;
+  edition_year: string;
+  nom: string;
+  nom_jeu: string | null;
+  description: string | null;
+  image_url: string | null;
+  liens: string; // JSON string
+  created_at: string;
+  updated_at: string;
+  membres: GameJamEquipeMember[];
+}
