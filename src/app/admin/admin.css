@@ -583,6 +583,9 @@
   border-radius: 8px;
   font-size: 0.9rem;
   background: white;
+  min-width: 140px;
+  cursor: pointer;
+  appearance: auto;
 }
 
 .gamejam-edition-select:focus {

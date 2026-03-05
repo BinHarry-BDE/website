@@ -35,11 +35,13 @@ export default function AdminGameJam() {
     const res = await api.getGameJamEditions();
     if (res.success && res.data) {
       setEditions(res.data);
-      if (!selectedEdition && res.data.length > 0) {
-        setSelectedEdition(res.data[0].year);
+      // Auto-select first edition if none selected
+      const firstYear = res.data[0]?.year;
+      if (firstYear) {
+        setSelectedEdition(prev => prev || firstYear);
       }
     }
-  }, [selectedEdition]);
+  }, []);
 
   const loadEquipes = useCallback(async () => {
     if (!selectedEdition) return;
@@ -335,6 +337,9 @@ export default function AdminGameJam() {
             <div className="gamejam-equipes-actions">
               <select className="gamejam-edition-select" value={selectedEdition}
                 onChange={e => setSelectedEdition(e.target.value)}>
+                {editions.length === 0 && (
+                  <option value="">Aucune édition</option>
+                )}
                 {editions.map(ed => (
                   <option key={ed.year} value={ed.year}>Édition {ed.year}</option>
                 ))}
