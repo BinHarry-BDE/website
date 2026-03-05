@@ -101,3 +101,43 @@ Permettre aux utilisateurs connectes de reagir sur chaque jeu:
    - `Coeur` est unique par edition.
 4. L'API renvoie l'etat mis a jour.
 5. Le client met a jour la carte du jeu sans rechargement de page.
+
+## Feature GameJam Editions, Equipes & Inscriptions
+
+### Objectif
+
+Permettre aux admins de gerer les editions GameJam et les equipes.
+Permettre aux utilisateurs de s'inscrire dans une equipe.
+
+### Tables DB
+
+- `GameJamEdition` : une ligne par edition (annee, theme, description, dates)
+- `GameJamEquipe` : equipes par edition (nom, jeu, description, image, liens JSON)
+- `GameJamInscription` : liaison user-equipe (unique par equipe+utilisateur)
+
+### Backend (BinHarry_API)
+
+Routes dans `src/routes/gamejam.ts` :
+- `GET /api/gamejam/editions` — liste les editions
+- `POST /api/gamejam/editions` — cree une edition (admin)
+- `DELETE /api/gamejam/editions/:year` — supprime (admin)
+- `GET /api/gamejam/equipes?edition=YYYY` — liste equipes avec membres
+- `POST /api/gamejam/equipes` — cree equipe (admin)
+- `PATCH /api/gamejam/equipes/:id` — modifie equipe (admin)
+- `DELETE /api/gamejam/equipes/:id` — supprime equipe (admin)
+- `POST /api/gamejam/equipes/:id/membres` — ajoute membre (admin)
+- `DELETE /api/gamejam/equipes/:id/membres/:userId` — retire membre (admin)
+- `POST /api/gamejam/equipes/:id/rejoindre` — utilisateur rejoint (auth)
+- `DELETE /api/gamejam/equipes/:id/quitter` — utilisateur quitte (auth)
+- `GET /api/gamejam/my-team?edition=YYYY` — equipe de l'utilisateur (auth)
+
+### Frontend
+
+- `src/components/admin/AdminGameJam.tsx` — Panel admin (editions + equipes + membres)
+- `src/components/dashboard/DashboardGameJam.tsx` — Panel utilisateur (inscription equipes)
+- Onglet « GameJam » dans `/admin` et `/dashboard`
+
+### Types
+
+- `GameJamEdition`, `GameJamEquipe`, `GameJamEquipeMember` dans `src/types/index.ts`
+- Methodes API dans `src/lib/api.ts`
