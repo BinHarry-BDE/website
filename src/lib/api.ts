@@ -14,6 +14,7 @@ import type {
   GameJamReactionsPayload,
   GameJamEdition,
   GameJamEquipe,
+  GameJamEditionWithTeams,
 } from '@/types';
 
 const API_URL = (process.env.NEXT_PUBLIC_API_URL || 'https://binharry-api.bdebinharry.workers.dev').replace(/\/+$/, '');
@@ -400,6 +401,7 @@ class ApiClient {
     description?: string;
     image_url?: string;
     liens?: string[];
+    classement?: number;
   }): Promise<ApiResponse<{ id: number }>> {
     return this.request<{ id: number }>('/api/gamejam/equipes', {
       method: 'POST',
@@ -413,6 +415,7 @@ class ApiClient {
     description?: string;
     image_url?: string;
     liens?: string[];
+    classement?: number | null;
   }): Promise<ApiResponse<void>> {
     return this.request<void>(`/api/gamejam/equipes/${id}`, {
       method: 'PATCH',
@@ -455,6 +458,36 @@ class ApiClient {
 
   async getMyTeam(editionYear: string): Promise<ApiResponse<GameJamEquipe | null>> {
     return this.request<GameJamEquipe | null>(`/api/gamejam/my-team?edition=${encodeURIComponent(editionYear)}`);
+  }
+
+  // GameJam image upload (sends raw binary, not JSON)
+  async uploadTeamImage(equipeId: number, file: File): Promise<ApiResponse<{ image_url: string }>> {
+    const token = this.getToken();
+    const headers: Record<string, string> = {
+      'Content-Type': file.type,
+    };
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+    }
+
+    try {
+      const response = await fetch(`${this.baseUrl}/api/gamejam/equipes/${equipeId}/image`, {
+        method: 'POST',
+        headers,
+        body: file,
+        credentials: 'include',
+      });
+
+      const data = await response.json();
+      return data;
+    } catch {
+      return { success: false, error: 'Erreur lors de l\'upload de l\'image' };
+    }
+  }
+
+  // GameJam public editions with teams (for the public GameJam page)
+  async getPublicEditions(): Promise<ApiResponse<GameJamEditionWithTeams[]>> {
+    return this.request<GameJamEditionWithTeams[]>('/api/gamejam/public/editions');
   }
 
   // Public
