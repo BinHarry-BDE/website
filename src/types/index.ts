@@ -176,7 +176,12 @@ export interface GameJamEquipe {
   description: string | null;
   image_url: string | null;
   liens: string; // JSON string
+  classement: number | null;
   created_at: string;
   updated_at: string;
   membres: GameJamEquipeMember[];
+}
+
+export interface GameJamEditionWithTeams extends GameJamEdition {
+  equipes: GameJamEquipe[];
 }

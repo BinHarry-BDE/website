@@ -23,7 +23,9 @@ export default function AdminGameJam() {
   // Equipe form
   const [showEquipeForm, setShowEquipeForm] = useState(false);
   const [editingEquipe, setEditingEquipe] = useState<GameJamEquipe | null>(null);
-  const [equipeForm, setEquipeForm] = useState({ nom: '', nom_jeu: '', description: '', image_url: '', liens: [''] });
+  const [equipeForm, setEquipeForm] = useState({ nom: '', nom_jeu: '', description: '', image_url: '', liens: [''], classement: '' });
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [uploading, setUploading] = useState(false);
 
   // Add member modal
   const [showAddMember, setShowAddMember] = useState<number | null>(null);
@@ -103,7 +105,8 @@ export default function AdminGameJam() {
   // ── Equipe CRUD ──
 
   const resetEquipeForm = () => {
-    setEquipeForm({ nom: '', nom_jeu: '', description: '', image_url: '', liens: [''] });
+    setEquipeForm({ nom: '', nom_jeu: '', description: '', image_url: '', liens: [''], classement: '' });
+    setImageFile(null);
     setEditingEquipe(null);
     setShowEquipeForm(false);
   };
@@ -118,7 +121,9 @@ export default function AdminGameJam() {
       description: eq.description || '',
       image_url: eq.image_url || '',
       liens,
+      classement: eq.classement ? String(eq.classement) : '',
     });
+    setImageFile(null);
     setEditingEquipe(eq);
     setShowEquipeForm(true);
   };
@@ -139,8 +144,18 @@ export default function AdminGameJam() {
         description: equipeForm.description || undefined,
         image_url: equipeForm.image_url || undefined,
         liens,
+        classement: equipeForm.classement ? parseInt(equipeForm.classement, 10) : null,
       });
       if (res.success) {
+        // Upload image if a file was selected
+        if (imageFile) {
+          setUploading(true);
+          const uploadRes = await api.uploadTeamImage(editingEquipe.id, imageFile);
+          setUploading(false);
+          if (!uploadRes.success) {
+            setError(uploadRes.error || 'Erreur upload image');
+          }
+        }
         setSuccess('Équipe mise à jour');
         resetEquipeForm();
         await loadEquipes();
@@ -155,8 +170,18 @@ export default function AdminGameJam() {
         description: equipeForm.description || undefined,
         image_url: equipeForm.image_url || undefined,
         liens,
+        classement: equipeForm.classement ? parseInt(equipeForm.classement, 10) : undefined,
       });
       if (res.success) {
+        // Upload image if a file was selected
+        if (imageFile && res.data?.id) {
+          setUploading(true);
+          const uploadRes = await api.uploadTeamImage(res.data.id, imageFile);
+          setUploading(false);
+          if (!uploadRes.success) {
+            setError(uploadRes.error || 'Erreur upload image');
+          }
+        }
         setSuccess('Équipe créée');
         resetEquipeForm();
         await loadEquipes();
@@ -381,9 +406,25 @@ export default function AdminGameJam() {
                           onChange={e => setEquipeForm(f => ({ ...f, description: e.target.value }))} />
                       </div>
                       <div className="dashboard-form-group">
-                        <label><IconImage size={14} /> URL de l&apos;image (logo/miniature)</label>
-                        <input type="url" placeholder="https://..." value={equipeForm.image_url}
-                          onChange={e => setEquipeForm(f => ({ ...f, image_url: e.target.value }))} />
+                        <label><IconImage size={14} /> Image du jeu (logo/miniature)</label>
+                        {equipeForm.image_url && !imageFile && (
+                          <div className="gamejam-current-image">
+                            <img src={equipeForm.image_url.startsWith('/api/') ? `${process.env.NEXT_PUBLIC_API_URL || 'https://binharry-api.bdebinharry.workers.dev'}${equipeForm.image_url}` : equipeForm.image_url} alt="Aperçu" style={{ maxWidth: 120, maxHeight: 80, borderRadius: 6, objectFit: 'cover' }} />
+                            <span className="gamejam-image-hint">Image actuelle</span>
+                          </div>
+                        )}
+                        <input type="file" accept="image/jpeg,image/png,image/webp,image/gif"
+                          onChange={e => {
+                            const file = e.target.files?.[0] || null;
+                            setImageFile(file);
+                          }} />
+                        {imageFile && <span className="gamejam-image-hint">{imageFile.name} ({(imageFile.size / 1024).toFixed(0)} Ko)</span>}
+                      </div>
+                      <div className="dashboard-form-group">
+                        <label>Classement (position au podium)</label>
+                        <input type="number" min="1" placeholder="1 = 1er, 2 = 2ème, 3 = 3ème, vide = hors podium"
+                          value={equipeForm.classement}
+                          onChange={e => setEquipeForm(f => ({ ...f, classement: e.target.value }))} />
                       </div>
                       <div className="dashboard-form-group">
                         <label><IconLink size={14} /> Liens (GitHub, itch.io, etc.) — 1 minimum *</label>
@@ -404,7 +445,9 @@ export default function AdminGameJam() {
                       </div>
                       <div className="modal-actions">
                         <button type="button" className="btn btn-secondary" onClick={() => resetEquipeForm()}>Annuler</button>
-                        <button type="submit" className="btn btn-primary">{editingEquipe ? 'Modifier' : 'Créer'}</button>
+                        <button type="submit" className="btn btn-primary" disabled={uploading}>
+                          {uploading ? 'Upload en cours...' : editingEquipe ? 'Modifier' : 'Créer'}
+                        </button>
                       </div>
                     </form>
                   </div>
@@ -457,7 +500,7 @@ export default function AdminGameJam() {
                       <div key={eq.id} className="gamejam-equipe-card dashboard-card">
                         <div className="gamejam-equipe-header">
                           {eq.image_url && (
-                            <img src={eq.image_url} alt={eq.nom_jeu || eq.nom} className="gamejam-equipe-image" />
+                            <img src={eq.image_url.startsWith('/api/') ? `${process.env.NEXT_PUBLIC_API_URL || 'https://binharry-api.bdebinharry.workers.dev'}${eq.image_url}` : eq.image_url} alt={eq.nom_jeu || eq.nom} className="gamejam-equipe-image" />
                           )}
                           <div>
                             <h3>{eq.nom}</h3>
