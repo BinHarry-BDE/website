@@ -132,10 +132,6 @@ export default function AdminGameJam() {
     e.preventDefault();
     clearMessages();
     const liens = equipeForm.liens.map(l => l.trim()).filter(Boolean);
-    if (liens.length === 0) {
-      setError('Au moins un lien est requis');
-      return;
-    }
 
     if (editingEquipe) {
       const res = await api.updateGameJamEquipe(editingEquipe.id, {
@@ -148,15 +144,20 @@ export default function AdminGameJam() {
       });
       if (res.success) {
         // Upload image if a file was selected
+        let imageError = '';
         if (imageFile) {
           setUploading(true);
           const uploadRes = await api.uploadTeamImage(editingEquipe.id, imageFile);
           setUploading(false);
           if (!uploadRes.success) {
-            setError(uploadRes.error || 'Erreur upload image');
+            imageError = uploadRes.error || 'Erreur upload image';
           }
         }
-        setSuccess('Équipe mise à jour');
+        if (imageError) {
+          setError(imageError);
+        } else {
+          setSuccess('Équipe mise à jour');
+        }
         resetEquipeForm();
         await loadEquipes();
       } else {
@@ -174,15 +175,20 @@ export default function AdminGameJam() {
       });
       if (res.success) {
         // Upload image if a file was selected
+        let imageError = '';
         if (imageFile && res.data?.id) {
           setUploading(true);
           const uploadRes = await api.uploadTeamImage(res.data.id, imageFile);
           setUploading(false);
           if (!uploadRes.success) {
-            setError(uploadRes.error || 'Erreur upload image');
+            imageError = uploadRes.error || 'Erreur upload image';
           }
         }
-        setSuccess('Équipe créée');
+        if (imageError) {
+          setError(imageError);
+        } else {
+          setSuccess('Équipe créée');
+        }
         resetEquipeForm();
         await loadEquipes();
       } else {
@@ -427,11 +433,11 @@ export default function AdminGameJam() {
                           onChange={e => setEquipeForm(f => ({ ...f, classement: e.target.value }))} />
                       </div>
                       <div className="dashboard-form-group">
-                        <label><IconLink size={14} /> Liens (GitHub, itch.io, etc.) — 1 minimum *</label>
+                        <label><IconLink size={14} /> Liens (GitHub, itch.io, etc.)</label>
                         {equipeForm.liens.map((lien, i) => (
                           <div key={i} className="gamejam-lien-row">
                             <input type="url" placeholder="https://github.com/..." value={lien}
-                              onChange={e => updateLien(i, e.target.value)} required={i === 0} />
+                              onChange={e => updateLien(i, e.target.value)} />
                             {equipeForm.liens.length > 1 && (
                               <button type="button" className="btn btn-danger btn-sm" onClick={() => removeLienField(i)}>
                                 <IconX size={14} />

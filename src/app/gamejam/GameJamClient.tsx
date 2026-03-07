@@ -6,6 +6,7 @@ import { useAuth } from '@/context/AuthContext';
 import { api } from '@/lib/api';
 import type {
   GameJamAdminDetail,
+  GameJamEdition,
   GameJamEditionWithTeams,
   GameJamReactionSummary,
   GameJamReactionType,
@@ -71,9 +72,25 @@ export default function GameJamClient({ staticEditions }: GameJamClientProps) {
   useEffect(() => {
     const load = async () => {
       setLoadingEditions(true);
+      // Try the dedicated public endpoint first, fallback to fetching editions + equipes separately
       const res = await api.getPublicEditions();
       if (res.success && res.data) {
         setDynamicEditions(res.data);
+      } else {
+        // Fallback: fetch editions list then equipes for each
+        const edRes = await api.getGameJamEditions();
+        if (edRes.success && edRes.data) {
+          const withTeams = await Promise.all(
+            edRes.data.map(async (edition: GameJamEdition) => {
+              const eqRes = await api.getGameJamEquipes(edition.year);
+              return {
+                ...edition,
+                equipes: (eqRes.success && eqRes.data) ? eqRes.data : [],
+              } as GameJamEditionWithTeams;
+            })
+          );
+          setDynamicEditions(withTeams);
+        }
       }
       setLoadingEditions(false);
     };
