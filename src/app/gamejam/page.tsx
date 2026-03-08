@@ -10,5 +10,5 @@ export const metadata: Metadata = {
 };
 
 export default function GameJamPage() {
-  return <GameJamClient editions={gameJamResults} />;
+  return <GameJamClient staticEditions={gameJamResults} />;
 }

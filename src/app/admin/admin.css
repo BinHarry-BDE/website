@@ -328,6 +328,77 @@
   padding: 0.5rem 0.25rem 0;
 }
 
+/* Chart Tooltip */
+.chart-tooltip {
+  background: rgba(17, 24, 39, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 10px 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 0 1px 3px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(10px);
+}
+
+.chart-tooltip-label {
+  font-size: 12px;
+  color: #9ca3af;
+  margin: 0 0 4px 0;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.chart-tooltip-value {
+  font-size: 16px;
+  color: #fff;
+  margin: 0;
+  font-weight: 600;
+}
+
+.chart-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 280px;
+  color: #9ca3af;
+  font-size: 14px;
+  font-style: italic;
+}
+
+/* Chart Tooltip */
+.chart-tooltip {
+  background: rgba(0, 0, 0, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  padding: 8px 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.chart-tooltip-label {
+  color: #fff;
+  font-size: 12px;
+  margin: 0 0 4px 0;
+  font-weight: 600;
+}
+
+.chart-tooltip-value {
+  color: #e0e7ff;
+  font-size: 14px;
+  margin: 0;
+  font-weight: 500;
+}
+
+/* Empty Chart */
+.chart-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 280px;
+  color: #9ca3af;
+  font-style: italic;
+  background: #f9fafb;
+  border-radius: 8px;
+}
+
 .line-chart-svg {
   width: 100%;
   height: 100%;
@@ -490,5 +561,294 @@
 
   .user-detail-actions {
     justify-content: center;
+  }
+}
+
+/* ─── GameJam Admin & User ─── */
+.gamejam-admin-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.gamejam-equipes-actions {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.gamejam-edition-select {
+  padding: 0.5rem 1rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  background: white;
+  min-width: 140px;
+  cursor: pointer;
+  appearance: auto;
+}
+
+.gamejam-edition-select:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px var(--color-accent-glow);
+}
+
+.gamejam-edition-form {
+  background: #f8f9fa;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.gamejam-equipes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 1.25rem;
+}
+
+.gamejam-equipe-card {
+  padding: 1.25rem !important;
+  margin-bottom: 0 !important;
+}
+
+.gamejam-equipe-card-user {
+  background: var(--surface-card);
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius-xl);
+  padding: 1.25rem;
+  box-shadow: var(--shadow-xs);
+  transition: box-shadow 0.2s;
+}
+
+.gamejam-equipe-card-user:hover {
+  box-shadow: var(--shadow-sm);
+}
+
+.gamejam-equipe-card-user.is-mine {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 2px var(--color-accent-glow);
+}
+
+.gamejam-equipe-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.gamejam-equipe-header h3 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: var(--fw-semibold);
+  color: var(--color-primary-900);
+}
+
+.gamejam-equipe-image {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.gamejam-equipe-image-large {
+  width: 100%;
+  max-width: 300px;
+  border-radius: 12px;
+  object-fit: cover;
+  margin: 0.75rem 0;
+}
+
+.gamejam-equipe-game {
+  margin: 0;
+  color: var(--color-accent);
+  font-size: 0.85rem;
+  font-weight: var(--fw-medium);
+}
+
+.gamejam-equipe-desc {
+  margin: 0 0 0.75rem;
+  color: #666;
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
+.gamejam-equipe-actions {
+  margin-left: auto;
+  display: flex;
+  gap: 0.35rem;
+  flex-shrink: 0;
+}
+
+.gamejam-equipe-liens {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.gamejam-lien-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.2rem 0.6rem;
+  background: #f0f4ff;
+  color: var(--color-accent);
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+
+.gamejam-lien-badge:hover {
+  background: #dce6ff;
+}
+
+.gamejam-lien-row {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.gamejam-lien-row input {
+  flex: 1;
+}
+
+.gamejam-equipe-membres {
+  border-top: 1px solid #e0e0e0;
+  padding-top: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+.gamejam-equipe-membres-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.gamejam-membres-list {
+  list-style: none;
+  padding: 0;
+  margin: 0.5rem 0 0;
+}
+
+.gamejam-membres-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.35rem 0;
+  font-size: 0.85rem;
+}
+
+.gamejam-membres-list.compact li {
+  padding: 0.2rem 0;
+  font-size: 0.85rem;
+  color: #555;
+}
+
+.gamejam-no-membres {
+  color: #999;
+  font-size: 0.85rem;
+  margin: 0.25rem 0 0;
+}
+
+.gamejam-equipe-join {
+  margin-top: 0.75rem;
+  text-align: center;
+}
+
+.gamejam-badge-mine {
+  display: inline-block;
+  padding: 0.3rem 0.8rem;
+  background: var(--color-success-bg);
+  color: #166534;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.gamejam-badge-already {
+  display: inline-block;
+  padding: 0.3rem 0.8rem;
+  background: #f0f0f0;
+  color: #888;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.gamejam-edition-selector {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.gamejam-edition-selector label {
+  font-weight: var(--fw-semibold);
+  color: var(--color-primary-900);
+}
+
+.gamejam-edition-info {
+  background: #f0f4ff;
+  border-color: var(--color-accent);
+}
+
+.gamejam-edition-info p {
+  margin: 0;
+  color: #555;
+}
+
+.gamejam-my-team {
+  border-left: 4px solid var(--color-accent);
+}
+
+.gamejam-my-team-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.gamejam-my-team-header h3 {
+  margin: 0;
+  color: var(--color-primary-900);
+}
+
+.gamejam-search-results {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-height: 300px;
+  overflow-y: auto;
+  margin-top: 0.75rem;
+}
+
+.gamejam-search-result-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0.75rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  font-size: 0.85rem;
+}
+
+@media (max-width: 768px) {
+  .gamejam-equipes-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .gamejam-equipes-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .gamejam-admin-tabs {
+    flex-wrap: wrap;
   }
 }

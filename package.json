@@ -12,9 +12,10 @@
     "preview": "opennextjs-cloudflare preview"
   },
   "dependencies": {
-    "next": "^15.1.12",
+    "next": "^16.1.6",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "recharts": "^3.7.0"
   },
   "devDependencies": {
     "@opennextjs/cloudflare": "^1.16.5",
