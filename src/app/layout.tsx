@@ -16,8 +16,8 @@ export const metadata: Metadata = {
   keywords: ['BinHarry', 'BDE', 'BUT Informatique', 'Reims', 'étudiants', 'soirées'],
   authors: [{ name: 'BinHarry' }],
   icons: {
-    icon: '/favicon.ico',
-    apple: '/apple-touch-icon.png',
+    icon: [{ url: '/favicon.ico', type: 'image/x-icon' }],
+    shortcut: ['/favicon.ico'],
   },
   openGraph: {
     type: 'website',

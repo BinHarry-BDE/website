@@ -14,6 +14,7 @@ BinHarry-Website/
 |- src/
 |  |- app/
 |  |  |- layout.tsx            # Layout global (Navbar + Footer)
+|  |  |- favicon.ico           # Favicon servi nativement par App Router
 |  |  |- globals.css           # Styles globaux
 |  |  |- page.tsx              # Accueil
 |  |  `- gamejam/
@@ -29,6 +30,12 @@ BinHarry-Website/
 |     `- index.ts              # Types TypeScript partages
 `- package.json
 ```
+
+## SEO Technique (favicon)
+
+- Le favicon principal est expose via `src/app/favicon.ico` (route `/favicon.ico` geree par Next.js App Router).
+- Une copie est conservee dans `public/favicon.ico` pour compatibilite avec les crawlers qui resolvent l'icone depuis les assets statiques.
+- `src/app/layout.tsx` declare explicitement `icons.icon` et `icons.shortcut` vers `/favicon.ico` pour eviter les liens d'icones casses en production.
 
 ## Role des dossiers
 
