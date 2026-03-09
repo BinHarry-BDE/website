@@ -99,6 +99,36 @@ Permettre aux utilisateurs connectes de reagir sur chaque jeu:
   - index de perfs par edition/jeu et utilisateur/edition
   - index unique partiel pour garantir un seul `Coeur` par utilisateur et edition
 
+## Feature Profile Popup
+
+### Objectif
+
+Afficher un mini popup au clic sur la photo de profil d'un membre (page d'accueil et page a propos).
+Le popup affiche : nom complet, email, role, date d'inscription, et equipe GameJam si existante.
+
+### Frontend
+
+- `src/components/ProfilePopup.tsx`:
+  - composant reutilisable wrappant n'importe quel avatar cliquable,
+  - charge le profil via l'API au clic (lazy loading),
+  - ferme le popup au clic exterieur.
+
+- `src/lib/api.ts`:
+  - `getMemberProfile(id)` → `GET /api/public/members/:id`
+
+- `src/types/index.ts`:
+  - `MemberProfile` (profil avec equipe GameJam optionnelle)
+
+### Integration
+
+- `src/components/HomeContent.tsx`: wrapping des bulles du mur de membres
+- `src/app/about/page.tsx`: wrapping des cartes du BDE
+
+### Backend associe (BinHarry_API)
+
+- Route: `src/routes/public.ts`
+  - `GET /api/public/members/:id` (profil public + derniere equipe GameJam)
+
 ### Flux GameJam detaille
 
 1. Le client charge les reactions de l'edition.
