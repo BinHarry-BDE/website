@@ -190,7 +190,6 @@ export interface MemberProfile {
   id: number;
   prenom: string;
   nom: string;
-  email: string;
   avatar_url: string | null;
   role: 'user' | 'admin' | 'founder';
   created_at: string;
