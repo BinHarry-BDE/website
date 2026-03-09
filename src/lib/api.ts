@@ -15,6 +15,7 @@ import type {
   GameJamEdition,
   GameJamEquipe,
   GameJamEditionWithTeams,
+  MemberProfile,
 } from '@/types';
 
 const API_URL = (process.env.NEXT_PUBLIC_API_URL || 'https://binharry-api.bdebinharry.workers.dev').replace(/\/+$/, '');
@@ -497,6 +498,10 @@ class ApiClient {
 
   async getBDEMembers(): Promise<ApiResponse<BDEMember[]>> {
     return this.request<BDEMember[]>('/api/public/bde-members');
+  }
+
+  async getMemberProfile(id: number): Promise<ApiResponse<MemberProfile>> {
+    return this.request<MemberProfile>(`/api/public/members/${id}`);
   }
 
   async getAnnonces(): Promise<ApiResponse<Annonce[]>> {

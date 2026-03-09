@@ -185,3 +185,18 @@ export interface GameJamEquipe {
 export interface GameJamEditionWithTeams extends GameJamEdition {
   equipes: GameJamEquipe[];
 }
+
+export interface MemberProfile {
+  id: number;
+  prenom: string;
+  nom: string;
+  email: string;
+  avatar_url: string | null;
+  role: 'user' | 'admin' | 'founder';
+  created_at: string;
+  gamejam_team: {
+    team_name: string;
+    nom_jeu: string | null;
+    edition_year: string;
+  } | null;
+}
