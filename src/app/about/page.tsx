@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import type { BDEMember } from '@/types';
 import { api } from '@/lib/api';
+import ProfilePopup from '@/components/ProfilePopup';
 import './about.css';
 
 export default function AboutPage() {
@@ -102,21 +103,23 @@ export default function AboutPage() {
         ) : bdeMembers.length > 0 ? (
           <div className="about-bde-grid">
             {bdeMembers.map((member) => (
-              <div key={member.id} className="about-bde-card">
-                <div className="about-bde-avatar">
-                  {member.avatar_url ? (
-                    <img src={member.avatar_url} alt={`${member.prenom} ${member.nom}`} />
-                  ) : (
-                    <div className="about-bde-avatar-placeholder">
-                      {member.prenom.charAt(0)}{member.nom.charAt(0)}
+              <ProfilePopup key={member.id} memberId={member.id}>
+                <div className="about-bde-card">
+                  <div className="about-bde-avatar">
+                    {member.avatar_url ? (
+                      <img src={member.avatar_url} alt={`${member.prenom} ${member.nom}`} />
+                    ) : (
+                      <div className="about-bde-avatar-placeholder">
+                        {member.prenom.charAt(0)}{member.nom.charAt(0)}
+                      </div>
+                    )}
+                    <div className={`about-bde-badge about-bde-badge-${member.role}`}>
+                      {member.role === 'founder' ? 'Fondateur' : 'Admin'}
                     </div>
-                  )}
-                  <div className={`about-bde-badge about-bde-badge-${member.role}`}>
-                    {member.role === 'founder' ? 'Fondateur' : 'Admin'}
                   </div>
+                  <h3 className="about-bde-name">{member.prenom} {member.nom}</h3>
                 </div>
-                <h3 className="about-bde-name">{member.prenom} {member.nom}</h3>
-              </div>
+              </ProfilePopup>
             ))}
           </div>
         ) : (
