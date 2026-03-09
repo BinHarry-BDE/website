@@ -4,13 +4,22 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { api } from '@/lib/api';
-import type { PublicMember, Annonce } from '@/types';
+import type { PublicMember, Annonce, GameJamEquipe } from '@/types';
 import { products } from '@/data/products';
+
+const API_URL_BASE = (process.env.NEXT_PUBLIC_API_URL || 'https://binharry-api.bdebinharry.workers.dev').replace(/\/+$/, '');
+
+function getPodiumImageUrl(imageUrl: string | null): string {
+  if (!imageUrl) return '';
+  if (imageUrl.startsWith('/api/')) return `${API_URL_BASE}${imageUrl}`;
+  return imageUrl;
+}
 import ProfilePopup from '@/components/ProfilePopup';
 
 export default function HomeContent() {
   const [members, setMembers] = useState<PublicMember[]>([]);
   const [annonces, setAnnonces] = useState<Annonce[]>([]);
+  const [podiumEquipes, setPodiumEquipes] = useState<GameJamEquipe[]>([]);
 
   useEffect(() => {
     api.getMembers().then((res) => {
@@ -18,6 +27,15 @@ export default function HomeContent() {
     });
     api.getAnnonces().then((res) => {
       if (res.success && res.data) setAnnonces(res.data);
+    });
+    api.getPublicEditions().then((res) => {
+      if (res.success && res.data && res.data.length > 0) {
+        const latest = [...res.data].sort((a, b) => b.year.localeCompare(a.year))[0];
+        const top3 = latest.equipes
+          .filter(eq => eq.classement !== null && eq.classement >= 1 && eq.classement <= 3)
+          .sort((a, b) => (a.classement ?? 99) - (b.classement ?? 99));
+        setPodiumEquipes(top3);
+      }
     });
   }, []);
 
@@ -165,36 +183,27 @@ export default function HomeContent() {
             </Link>
           </div>
           <div className="gamejam-home-cta-visual" aria-hidden="true">
-            <div className="gamejam-mini-card gamejam-mini-card-1">
-              <Image
-                src={encodeURI('/asset/GameJam/La légende deux gustave et les couleurs Perdu.png')}
-                alt="Top 1 GameJam"
-                fill
-                sizes="(max-width: 768px) 100vw, 50vw"
-                className="gamejam-mini-image"
-              />
-              <span className="gamejam-mini-label">Top 1</span>
-            </div>
-            <div className="gamejam-mini-card gamejam-mini-card-2">
-              <Image
-                src={encodeURI('/asset/GameJam/Nova and his missing sister.png')}
-                alt="Top 2 GameJam"
-                fill
-                sizes="(max-width: 768px) 33vw, 25vw"
-                className="gamejam-mini-image"
-              />
-              <span className="gamejam-mini-label">Top 2</span>
-            </div>
-            <div className="gamejam-mini-card gamejam-mini-card-3">
-              <Image
-                src={encodeURI('/asset/GameJam/FNAF Blanchard.png')}
-                alt="Top 3 GameJam"
-                fill
-                sizes="(max-width: 768px) 33vw, 25vw"
-                className="gamejam-mini-image"
-              />
-              <span className="gamejam-mini-label">Top 3</span>
-            </div>
+            {([1, 2, 3] as const).map((rank) => {
+              const equipe = podiumEquipes.find(eq => eq.classement === rank);
+              const imgUrl = equipe ? getPodiumImageUrl(equipe.image_url) : '';
+              const sizes = rank === 1 ? '(max-width: 768px) 100vw, 50vw' : '(max-width: 768px) 33vw, 25vw';
+              return (
+                <div key={rank} className={`gamejam-mini-card gamejam-mini-card-${rank}`}>
+                  {imgUrl ? (
+                    <Image
+                      src={imgUrl}
+                      alt={`Top ${rank} GameJam`}
+                      fill
+                      sizes={sizes}
+                      className="gamejam-mini-image"
+                    />
+                  ) : (
+                    <div className="gamejam-mini-image gamejam-mini-image-empty" />
+                  )}
+                  <span className="gamejam-mini-label">Top {rank}</span>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>

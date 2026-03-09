@@ -58,6 +58,7 @@ BinHarry-Website/
 - Next.js App Router pour les pages et metadata SEO.
 - Composants client uniquement quand un state interactif est necessaire.
 - Separation claire entre donnees statiques de page (`data.ts`) et logique UI (`GameJamClient.tsx`).
+- `HomeContent.tsx` charge dynamiquement les equipes Top 1/2/3 de l'edition la plus recente via `api.getPublicEditions()` pour la banniere GameJam de la page d'accueil.
 - Client API unique (`src/lib/api.ts`) pour uniformiser auth, erreurs et fallback dev.
 
 ## Feature GameJam Reactions
