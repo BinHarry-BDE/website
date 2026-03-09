@@ -1,7 +1,6 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import Image from 'next/image';
 import { useAuth } from '@/context/AuthContext';
 import { api } from '@/lib/api';
 import type {
@@ -13,14 +12,9 @@ import type {
   GameJamReactionsPayload,
   GameJamUserReaction,
 } from '@/types';
-import type { GameJamYear } from './data';
-import { getGameJamImagePath, rankLabel } from './data';
+import { rankLabel } from './data';
 
 const API_URL = (process.env.NEXT_PUBLIC_API_URL || 'https://binharry-api.bdebinharry.workers.dev').replace(/\/+$/, '');
-
-type GameJamClientProps = {
-  staticEditions: GameJamYear[];
-};
 
 type SummaryByGame = Map<string, GameJamReactionSummary>;
 type UserReactionByGame = Map<string, GameJamUserReaction>;
@@ -55,7 +49,7 @@ function getTeamLinks(liens: string): string[] {
   }
 }
 
-export default function GameJamClient({ staticEditions }: GameJamClientProps) {
+export default function GameJamClient() {
   const { user, isAuthenticated } = useAuth();
   const [reactionsByEdition, setReactionsByEdition] = useState<ReactionsByEdition>(new Map());
   const [isLoadingReactions, setIsLoadingReactions] = useState(true);
@@ -99,29 +93,8 @@ export default function GameJamClient({ staticEditions }: GameJamClientProps) {
 
   // Compute all edition years that need reactions loaded
   const allEditionYears = useMemo(() => {
-    const years = new Set<string>();
-    for (const ed of staticEditions) years.add(ed.year);
-    for (const ed of dynamicEditions) years.add(ed.year);
-    return Array.from(years);
-  }, [staticEditions, dynamicEditions]);
-
-  // Static edition years (to avoid rendering duplicates)
-  const staticYears = useMemo(() => new Set(staticEditions.map(e => e.year)), [staticEditions]);
-
-  // Dynamic editions that DON'T overlap with static ones
-  const uniqueDynamicEditions = useMemo(
-    () => dynamicEditions.filter(ed => !staticYears.has(ed.year)),
-    [dynamicEditions, staticYears]
-  );
-
-  // Dynamic editions that DO overlap with static (to merge reactions)
-  const overlappingDynamic = useMemo(() => {
-    const map = new Map<string, GameJamEditionWithTeams>();
-    for (const ed of dynamicEditions) {
-      if (staticYears.has(ed.year)) map.set(ed.year, ed);
-    }
-    return map;
-  }, [dynamicEditions, staticYears]);
+    return dynamicEditions.map(ed => ed.year);
+  }, [dynamicEditions]);
 
   // Load reactions for all editions
   const loadAllReactions = useCallback(async () => {
@@ -436,82 +409,6 @@ export default function GameJamClient({ staticEditions }: GameJamClientProps) {
     );
   };
 
-  // Render a static edition (from data.ts)
-  const renderStaticEdition = (edition: GameJamYear) => (
-    <article key={edition.year} className="gamejam-year-block">
-      <div className="gamejam-year-head">
-        <h2>Edition {edition.year}</h2>
-      </div>
-      <div className="gamejam-year-intro">
-        <h3>Podium de la communaute</h3>
-        <p>Trois projets mis en avant selon les votes et retours des etudiants.</p>
-      </div>
-      <div className="gamejam-podium-grid">
-        {edition.winners.map((winner) => (
-          <div key={`${edition.year}-${winner.rank}`} className={`gamejam-card gamejam-rank-${winner.rank}`}>
-            <div className="gamejam-rank-badge">{rankLabel[winner.rank]}</div>
-            <div className="gamejam-image-placeholder">
-              <Image
-                src={getGameJamImagePath(winner.imageFile)}
-                alt={winner.title}
-                fill
-                sizes="(max-width: 900px) 100vw, 33vw"
-                className="gamejam-image"
-              />
-            </div>
-            <div className="gamejam-card-content">
-              <h3>{winner.title}</h3>
-              <p>{winner.team}</p>
-              {winner.githubUrl ? (
-                <a href={winner.githubUrl} className="gamejam-link" target="_blank" rel="noreferrer">
-                  Voir le GitHub
-                </a>
-              ) : (
-                <span className="gamejam-link gamejam-link-disabled">Pas de lien GitHub</span>
-              )}
-              {renderReactionBlock(edition.year, winner.id)}
-            </div>
-          </div>
-        ))}
-      </div>
-
-      <div className="gamejam-all-games">
-        <div className="gamejam-all-games-head">
-          <h3>Tous les jeux de l&apos;edition {edition.year}</h3>
-          <p>Explore l&apos;ensemble des projets realises pendant la GameJam.</p>
-        </div>
-        <div className="gamejam-all-games-grid">
-          {edition.allGames.map((game) => (
-            <div key={game.id} className="gamejam-all-game-card">
-              {game.topLabel && <span className="gamejam-top-badge">{game.topLabel}</span>}
-              <div className="gamejam-all-game-image">
-                <Image
-                  src={getGameJamImagePath(game.imageFile)}
-                  alt={game.title}
-                  fill
-                  sizes="(max-width: 900px) 100vw, (max-width: 1200px) 50vw, 25vw"
-                  className="gamejam-image"
-                />
-              </div>
-              <div className="gamejam-all-game-content">
-                <h4>{game.title}</h4>
-                <p>{game.team}</p>
-                {game.githubUrl ? (
-                  <a href={game.githubUrl} className="gamejam-link" target="_blank" rel="noreferrer">
-                    Voir le GitHub
-                  </a>
-                ) : (
-                  <span className="gamejam-link gamejam-link-disabled">Pas de lien GitHub</span>
-                )}
-                {renderReactionBlock(edition.year, game.id)}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </article>
-  );
-
   return (
     <section className="gamejam-page">
       <header className="gamejam-header">
@@ -526,11 +423,7 @@ export default function GameJamClient({ staticEditions }: GameJamClientProps) {
       </header>
 
       <div className="gamejam-years">
-        {/* Dynamic editions from API (newest first, excluding static ones) */}
-        {uniqueDynamicEditions.map(renderDynamicEdition)}
-
-        {/* Static editions from data.ts */}
-        {staticEditions.map(renderStaticEdition)}
+        {dynamicEditions.map(renderDynamicEdition)}
       </div>
     </section>
   );
