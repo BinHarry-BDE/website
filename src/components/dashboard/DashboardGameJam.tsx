@@ -5,6 +5,14 @@ import { api } from '@/lib/api';
 import type { GameJamEdition, GameJamEquipe } from '@/types';
 import { IconLink, IconLogOut, IconGamepad } from '@/components/Icons';
 
+const API_URL = (process.env.NEXT_PUBLIC_API_URL || 'https://binharry-api.bdebinharry.workers.dev').replace(/\/+$/, '');
+
+function getImageUrl(imageUrl: string | null | undefined): string {
+  if (!imageUrl) return '';
+  if (imageUrl.startsWith('/api/')) return `${API_URL}${imageUrl}`;
+  return imageUrl;
+}
+
 export default function DashboardGameJam() {
   const [editions, setEditions] = useState<GameJamEdition[]>([]);
   const [selectedEdition, setSelectedEdition] = useState('');
@@ -117,7 +125,7 @@ export default function DashboardGameJam() {
           </div>
           {myTeam.nom_jeu && <p className="gamejam-equipe-game">Jeu : {myTeam.nom_jeu}</p>}
           {myTeam.image_url && (
-            <img src={myTeam.image_url} alt={myTeam.nom_jeu || myTeam.nom} className="gamejam-equipe-image-large" />
+            <img src={getImageUrl(myTeam.image_url)} alt={myTeam.nom_jeu || myTeam.nom} className="gamejam-equipe-image-large" />
           )}
           {myTeam.description && <p>{myTeam.description}</p>}
           {(() => {
@@ -159,7 +167,7 @@ export default function DashboardGameJam() {
                 <div key={eq.id} className={`gamejam-equipe-card-user ${isMine ? 'is-mine' : ''}`}>
                   <div className="gamejam-equipe-header">
                     {eq.image_url && (
-                      <img src={eq.image_url} alt={eq.nom_jeu || eq.nom} className="gamejam-equipe-image" />
+                      <img src={getImageUrl(eq.image_url)} alt={eq.nom_jeu || eq.nom} className="gamejam-equipe-image" />
                     )}
                     <div>
                       <h3>{eq.nom}</h3>
