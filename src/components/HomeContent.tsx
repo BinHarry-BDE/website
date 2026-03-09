@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { api } from '@/lib/api';
 import type { PublicMember, Annonce } from '@/types';
 import { products } from '@/data/products';
+import ProfilePopup from '@/components/ProfilePopup';
 
 export default function HomeContent() {
   const [members, setMembers] = useState<PublicMember[]>([]);
@@ -235,16 +236,18 @@ export default function HomeContent() {
         {members.length > 0 ? (
           <div className="members-wall">
             {members.map((m) => (
-              <div key={m.id} className="member-bubble" title={`${m.prenom} ${m.nom}`}>
-                {m.avatar_url ? (
-                  <img src={m.avatar_url} alt={`${m.prenom} ${m.nom}`} className="member-avatar-img" />
-                ) : (
-                  <span className="member-initials">
-                    {m.prenom[0]}{m.nom[0]}
-                  </span>
-                )}
-                <span className="member-name">{m.prenom}</span>
-              </div>
+              <ProfilePopup key={m.id} memberId={m.id}>
+                <div className="member-bubble" title={`${m.prenom} ${m.nom}`}>
+                  {m.avatar_url ? (
+                    <img src={m.avatar_url} alt={`${m.prenom} ${m.nom}`} className="member-avatar-img" />
+                  ) : (
+                    <span className="member-initials">
+                      {m.prenom[0]}{m.nom[0]}
+                    </span>
+                  )}
+                  <span className="member-name">{m.prenom}</span>
+                </div>
+              </ProfilePopup>
             ))}
           </div>
         ) : (
