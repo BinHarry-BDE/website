@@ -12,6 +12,10 @@ import type {
   AdminUserStats,
   GameJamReactionType,
   GameJamReactionsPayload,
+  GameJamEdition,
+  GameJamEquipe,
+  GameJamEditionWithTeams,
+  MemberProfile,
 } from '@/types';
 
 const API_URL = (process.env.NEXT_PUBLIC_API_URL || 'https://binharry-api.bdebinharry.workers.dev').replace(/\/+$/, '');
@@ -362,6 +366,131 @@ class ApiClient {
     });
   }
 
+  // GameJam Editions
+  async getGameJamEditions(): Promise<ApiResponse<GameJamEdition[]>> {
+    return this.request<GameJamEdition[]>('/api/gamejam/editions');
+  }
+
+  async createGameJamEdition(data: {
+    year: string;
+    theme?: string;
+    description?: string;
+    date_debut?: string;
+    date_fin?: string;
+  }): Promise<ApiResponse<void>> {
+    return this.request<void>('/api/gamejam/editions', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  }
+
+  async deleteGameJamEdition(year: string): Promise<ApiResponse<void>> {
+    return this.request<void>(`/api/gamejam/editions/${encodeURIComponent(year)}`, {
+      method: 'DELETE',
+    });
+  }
+
+  // GameJam Equipes
+  async getGameJamEquipes(editionYear: string): Promise<ApiResponse<GameJamEquipe[]>> {
+    return this.request<GameJamEquipe[]>(`/api/gamejam/equipes?edition=${encodeURIComponent(editionYear)}`);
+  }
+
+  async createGameJamEquipe(data: {
+    edition_year: string;
+    nom: string;
+    nom_jeu?: string;
+    description?: string;
+    image_url?: string;
+    liens?: string[];
+    classement?: number;
+  }): Promise<ApiResponse<{ id: number }>> {
+    return this.request<{ id: number }>('/api/gamejam/equipes', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  }
+
+  async updateGameJamEquipe(id: number, data: {
+    nom?: string;
+    nom_jeu?: string;
+    description?: string;
+    image_url?: string;
+    liens?: string[];
+    classement?: number | null;
+  }): Promise<ApiResponse<void>> {
+    return this.request<void>(`/api/gamejam/equipes/${id}`, {
+      method: 'PATCH',
+      body: JSON.stringify(data),
+    });
+  }
+
+  async deleteGameJamEquipe(id: number): Promise<ApiResponse<void>> {
+    return this.request<void>(`/api/gamejam/equipes/${id}`, {
+      method: 'DELETE',
+    });
+  }
+
+  // GameJam team members (admin)
+  async addTeamMember(equipeId: number, utilisateurId: number): Promise<ApiResponse<void>> {
+    return this.request<void>(`/api/gamejam/equipes/${equipeId}/membres`, {
+      method: 'POST',
+      body: JSON.stringify({ utilisateur_id: utilisateurId }),
+    });
+  }
+
+  async removeTeamMember(equipeId: number, utilisateurId: number): Promise<ApiResponse<void>> {
+    return this.request<void>(`/api/gamejam/equipes/${equipeId}/membres/${utilisateurId}`, {
+      method: 'DELETE',
+    });
+  }
+
+  // GameJam self-inscription
+  async joinTeam(equipeId: number): Promise<ApiResponse<void>> {
+    return this.request<void>(`/api/gamejam/equipes/${equipeId}/rejoindre`, {
+      method: 'POST',
+    });
+  }
+
+  async leaveTeam(equipeId: number): Promise<ApiResponse<void>> {
+    return this.request<void>(`/api/gamejam/equipes/${equipeId}/quitter`, {
+      method: 'DELETE',
+    });
+  }
+
+  async getMyTeam(editionYear: string): Promise<ApiResponse<GameJamEquipe | null>> {
+    return this.request<GameJamEquipe | null>(`/api/gamejam/my-team?edition=${encodeURIComponent(editionYear)}`);
+  }
+
+  // GameJam image upload (sends raw binary, not JSON)
+  async uploadTeamImage(equipeId: number, file: File): Promise<ApiResponse<{ image_url: string }>> {
+    const token = this.getToken();
+    const headers: Record<string, string> = {
+      'Content-Type': file.type,
+    };
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+    }
+
+    try {
+      const response = await fetch(`${this.baseUrl}/api/gamejam/equipes/${equipeId}/image`, {
+        method: 'POST',
+        headers,
+        body: file,
+        credentials: 'include',
+      });
+
+      const data = await response.json();
+      return data;
+    } catch {
+      return { success: false, error: 'Erreur lors de l\'upload de l\'image' };
+    }
+  }
+
+  // GameJam public editions with teams (for the public GameJam page)
+  async getPublicEditions(): Promise<ApiResponse<GameJamEditionWithTeams[]>> {
+    return this.request<GameJamEditionWithTeams[]>('/api/gamejam/public/editions');
+  }
+
   // Public
   async getMembers(): Promise<ApiResponse<PublicMember[]>> {
     return this.request<PublicMember[]>('/api/public/members');
@@ -369,6 +498,10 @@ class ApiClient {
 
   async getBDEMembers(): Promise<ApiResponse<BDEMember[]>> {
     return this.request<BDEMember[]>('/api/public/bde-members');
+  }
+
+  async getMemberProfile(id: number): Promise<ApiResponse<MemberProfile>> {
+    return this.request<MemberProfile>(`/api/public/members/${id}`);
   }
 
   async getAnnonces(): Promise<ApiResponse<Annonce[]>> {

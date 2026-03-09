@@ -7,11 +7,12 @@ import AdminUsers from '@/components/admin/AdminUsers';
 import AdminSubscriptions from '@/components/admin/AdminSubscriptions';
 import AdminBroadcast from '@/components/admin/AdminBroadcast';
 import AdminStats from '@/components/admin/AdminStats';
-import { IconBarChart, IconUsers, IconCreditCard, IconMegaphone, IconArrowLeft, IconShield } from '@/components/Icons';
+import AdminGameJam from '@/components/admin/AdminGameJam';
+import { IconBarChart, IconUsers, IconCreditCard, IconMegaphone, IconArrowLeft, IconShield, IconGamepad } from '@/components/Icons';
 import '../dashboard/dashboard.css';
 import './admin.css';
 
-type TabType = 'stats' | 'users' | 'subscriptions' | 'broadcast';
+type TabType = 'stats' | 'users' | 'subscriptions' | 'broadcast' | 'gamejam';
 
 export default function AdminPage() {
   const { user, isAuthenticated, isLoading } = useAuth();
@@ -48,6 +49,7 @@ export default function AdminPage() {
     { id: 'users', label: 'Utilisateurs', icon: <IconUsers size={18} /> },
     { id: 'subscriptions', label: 'Abonnements', icon: <IconCreditCard size={18} /> },
     { id: 'broadcast', label: 'Annonces', icon: <IconMegaphone size={18} /> },
+    { id: 'gamejam', label: 'GameJam', icon: <IconGamepad size={18} /> },
   ];
 
   const renderContent = () => {
@@ -60,6 +62,8 @@ export default function AdminPage() {
         return <AdminSubscriptions />;
       case 'broadcast':
         return <AdminBroadcast />;
+      case 'gamejam':
+        return <AdminGameJam />;
       default:
         return <AdminStats />;
     }
